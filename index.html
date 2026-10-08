@@ -47,14 +47,15 @@ footer a{color:var(--accent);text-decoration:none}
 
 <div class="stats">
 <div class="stat"><div class="k">客户端耗时</div><div class="v">197 → 15 ms<small> 13×</small></div></div>
-<div class="stat"><div class="k">扫描量</div><div class="v">262,144 → 129<small> keys</small></div></div>
+<div class="stat"><div class="k">扫描量</div><div class="v">262,144 → 129<small> 行（KV keys 同数）</small></div></div>
 <div class="stat"><div class="k">等价性</div><div class="v">COUNT=129<small> 同快照一致</small></div></div>
 <div class="stat"><div class="k">人类参与</div><div class="v">4 条消息<small> 1 告警 + 3 授权</small></div></div>
 </div>
 
 <h2>观看</h2>
 <div class="links">
-<a class="card" href="video/act1_3min_tts.mp4"><span><span class="t">📹 高能版实录视频</span><span class="d">5:27 · 含解说配音 · 静音版 <u>video/act1_3min.mp4</u></span></span><span class="arrow">▶ 播放 →</span></a>
+<a class="card" href="video/act1_3min_tts.mp4"><span><span class="t">📹 高能版实录 · 解说配音版</span><span class="d">5:27 · 含全程解说</span></span><span class="arrow">▶ 播放 →</span></a>
+<a class="card" href="video/act1_3min.mp4"><span><span class="t">📹 高能版实录 · 静音字幕版</span><span class="d">5:30 · 无解说 · 适合静音浏览</span></span><span class="arrow">▶ 播放 →</span></a>
 <a class="card" href="replay/act1_timeline.html"><span><span class="t">🌐 协作时间线回放页</span><span class="d">可交互浏览全部协作节点与证据索引</span></span><span class="arrow">打开 →</span></a>
 <a class="card" href="https://github.com/alitrack/tidb-loop-squad"><span><span class="t">📄 完整证据包</span><span class="d">取证 JSON · 两阶段事故报告 · 角色卡 · 巡检脚本</span></span><span class="arrow">GitHub →</span></a>
 </div>
@@ -63,7 +64,7 @@ footer a{color:var(--accent);text-decoration:none}
 <ul class="tl">
 <li><span class="t">08:55</span><div class="h">P1 告警<span class="tag">人类</span></div>订单查询大面积超时，orders_big 延迟飙高</li>
 <li><span class="t">08:56</span><div class="h">squad-lead 接管</div>立规矩：未经授权不执行 DDL；拆单取证 #t3 / 诊断 #t4</li>
-<li><span class="t">08:58</span><div class="h">inspector 锁定目标 SQL</div>985 次执行 · 平均 183ms · 每次全表扫描 262,144 keys</li>
+<li><span class="t">08:58</span><div class="h">inspector 锁定目标 SQL</div>985 次执行 · 平均 183ms · 每次全表扫描 262,144 行</li>
 <li><span class="t">09:00</span><div class="h">diagnostician 机制闭合</div>LIKE 前置通配 + 无二级索引 = TableFullScan；方案含回滚顺序与复测门槛</li>
 <li class="auth"><span class="t">09:06</span><div class="h">授权修复<span class="tag">人类授权①</span></div>批准虚拟生成列 + 覆盖索引，先隔离验证再生产</li>
 <li class="auth"><span class="t">09:10</span><div class="h">演示环境合并执行<span class="tag">人类授权②</span></div>隔离验证与生产合并，直接执行 DDL 并复测</li>
