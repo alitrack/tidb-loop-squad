@@ -1,25 +1,84 @@
-# TiDB 值夜 Agent 小队 · 1024 TiDB AIGC 黑客松参赛作品
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TiDB 值夜 Agent 小队 · 1024 TiDB AIGC 黑客松</title>
+<meta name="description" content="四个 Agent 在平凯 Loop 上组成 DBA 值班小队，在平凯云 Serverless TiDB 上真实闭环一次 P1 慢查询事故。人类全程只发 4 条消息。">
+<style>
+:root{--bg:#0d1117;--card:#161b22;--border:#30363d;--txt:#e6edf3;--dim:#8b949e;--accent:#58a6ff;--green:#3fb950;--human:#d29922}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.7}
+.wrap{max-width:880px;margin:0 auto;padding:48px 24px 80px}
+.badge{display:inline-block;background:#1f6feb33;color:var(--accent);border:1px solid #1f6feb66;border-radius:20px;padding:2px 14px;font-size:13px;margin-bottom:16px}
+h1{font-size:32px;margin-bottom:10px;letter-spacing:.5px}
+.sub{color:var(--dim);font-size:16px;margin-bottom:32px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:28px 0}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px 18px}
+.stat .k{color:var(--dim);font-size:12px;margin-bottom:4px}
+.stat .v{font-size:20px;font-weight:700;color:var(--green)}
+.stat .v small{font-size:12px;color:var(--dim);font-weight:400}
+h2{font-size:20px;margin:36px 0 14px;border-left:3px solid var(--accent);padding-left:10px}
+.links{display:flex;flex-direction:column;gap:10px}
+a.card{display:flex;justify-content:space-between;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px 20px;color:var(--txt);text-decoration:none;transition:border-color .2s}
+a.card:hover{border-color:var(--accent)}
+a.card .t{font-weight:600}
+a.card .d{color:var(--dim);font-size:13px}
+a.card .arrow{color:var(--accent);font-size:18px;margin-left:16px;white-space:nowrap}
+.tl{list-style:none}
+.tl li{position:relative;padding:0 0 18px 26px;border-left:1px solid var(--border);margin-left:8px}
+.tl li:last-child{border-left-color:transparent}
+.tl li::before{content:"";position:absolute;left:-5px;top:6px;width:9px;height:9px;border-radius:50%;background:var(--accent)}
+.tl li.auth::before{background:var(--human)}
+.tl .t{color:var(--dim);font-size:12px;font-family:ui-monospace,monospace}
+.tl .h{font-weight:600}
+.tl .h .tag{color:var(--human);font-size:12px;border:1px solid var(--human);border-radius:4px;padding:0 6px;margin-left:6px}
+.motto{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin-top:14px}
+.motto b{color:var(--accent)}
+footer{margin-top:48px;color:var(--dim);font-size:13px;border-top:1px solid var(--border);padding-top:20px}
+footer a{color:var(--accent);text-decoration:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+<span class="badge">1024 TiDB AIGC 黑客松参赛作品</span>
+<h1>TiDB 值夜 Agent 小队</h1>
+<p class="sub">四个 Agent 在平凯 Loop 上组成 DBA 值班小队，在平凯云 Serverless TiDB 上真实闭环一次 P1 慢查询事故——人类全程只发 4 条消息。</p>
 
-> 四个 Agent 在平凯 Loop 上组成 DBA 值班小队，在平凯云 Serverless TiDB 上真实闭环一次 P1 慢查询事故。人类全程只发 4 条消息。
+<div class="stats">
+<div class="stat"><div class="k">客户端耗时</div><div class="v">197 → 15 ms<small> 13×</small></div></div>
+<div class="stat"><div class="k">扫描量</div><div class="v">262,144 → 129<small> keys</small></div></div>
+<div class="stat"><div class="k">等价性</div><div class="v">COUNT=129<small> 同快照一致</small></div></div>
+<div class="stat"><div class="k">人类参与</div><div class="v">4 条消息<small> 1 告警 + 3 授权</small></div></div>
+</div>
 
-## 核心数字（全部有证据链）
+<h2>观看</h2>
+<div class="links">
+<a class="card" href="video/act1_3min_tts.mp4"><span><span class="t">📹 高能版实录视频</span><span class="d">5:27 · 含解说配音 · 静音版 <u>video/act1_3min.mp4</u></span></span><span class="arrow">▶ 播放 →</span></a>
+<a class="card" href="replay/act1_timeline.html"><span><span class="t">🌐 协作时间线回放页</span><span class="d">可交互浏览全部协作节点与证据索引</span></span><span class="arrow">打开 →</span></a>
+<a class="card" href="https://github.com/alitrack/tidb-loop-squad"><span><span class="t">📄 完整证据包</span><span class="d">取证 JSON · 两阶段事故报告 · 角色卡 · 巡检脚本</span></span><span class="arrow">GitHub →</span></a>
+</div>
 
-| 指标 | 结果 |
-|---|---|
-| 客户端耗时 | **197.4ms → 15.0ms（13 倍）** |
-| 服务端耗时 | 183ms → 2.388ms（STATEMENTS_SUMMARY_HISTORY 实测） |
-| 扫描量 | **262,144 keys → 129 keys** |
-| 等价性 | 同快照新旧 SQL 结果完全一致（COUNT=129 / SUM=12771.00） |
-| 人类参与 | **4 条消息**（1 告警 + 3 授权） |
+<h2>39 分钟事故时间线</h2>
+<ul class="tl">
+<li><span class="t">08:55</span><div class="h">P1 告警<span class="tag">人类</span></div>订单查询大面积超时，orders_big 延迟飙高</li>
+<li><span class="t">08:56</span><div class="h">squad-lead 接管</div>立规矩：未经授权不执行 DDL；拆单取证 #t3 / 诊断 #t4</li>
+<li><span class="t">08:58</span><div class="h">inspector 锁定目标 SQL</div>985 次执行 · 平均 183ms · 每次全表扫描 262,144 keys</li>
+<li><span class="t">09:00</span><div class="h">diagnostician 机制闭合</div>LIKE 前置通配 + 无二级索引 = TableFullScan；方案含回滚顺序与复测门槛</li>
+<li class="auth"><span class="t">09:06</span><div class="h">授权修复<span class="tag">人类授权①</span></div>批准虚拟生成列 + 覆盖索引，先隔离验证再生产</li>
+<li class="auth"><span class="t">09:10</span><div class="h">演示环境合并执行<span class="tag">人类授权②</span></div>隔离验证与生产合并，直接执行 DDL 并复测</li>
+<li><span class="t">09:19-09:22</span><div class="h">DDL + 同快照交替复测</div>改写 SQL 19.4ms 达标 · 原 SQL 187.8ms 未达标——如实分开报告，不冒称原查询已加速</li>
+<li class="auth"><span class="t">09:25</span><div class="h">批准切换<span class="tag">人类授权③</span></div>应用侧切换为显式尾缀列查询</li>
+<li><span class="t">09:31-09:33</span><div class="h">终局复测</div>5 次全部 &lt;25ms · 均值 15.0ms · 实走索引 actRows=129</li>
+<li><span class="t">09:34</span><div class="h">P1 关闭</div>squad-lead 核验后宣告，附边界声明：不外推生产 SLO</li>
+</ul>
 
-## 观看
+<div class="motto">小队信条：<b>卖的是建制，不是魔法。</b>队长两次驳回越权冲动、坚持先隔离验证再生产；复测结果如实分开报告，不用改写 SQL 的数字冒称原查询已加速——AI 不吹牛，是人机互信的根基。</div>
 
-- 📹 [5:30 高能版实录视频](video/act1_3min.mp4)
-- 🌐 [协作时间线回放页](replay/act1_timeline.html)（可交互浏览全部节点与证据索引）
-- 📄 [完整证据包（取证 JSON / 两阶段事故报告 / 角色卡）](https://github.com/alitrack/tidb-loop-squad)
-
-## 事故剧情（39 分钟）
-
-08:55 P1 告警 → squad-lead 接管立规矩（未经授权不执行 DDL）→ inspector 锁定 985 次执行的 LIKE 前置通配全表扫描 → diagnostician 机制闭合 → **人类授权①修复** → **授权②演示环境合并执行 DDL** → 同快照交替复测（改写 SQL 19.4ms 达标、原 SQL 187.8ms 未达标——如实分开报告）→ **授权③批准切换** → 终局复测 5 次全 <25ms → P1 关闭（附边界声明）。
-
-小队信条：**卖的是建制，不是魔法**——队长两次驳回越权冲动，坚持先隔离验证再生产；AI 不吹牛，是人机互信的根基。
+<footer>
+作品运行于 <a href="https://loop.pingkai.cn" target="_blank">平凯 Loop</a> × <a href="https://pingkai.cn" target="_blank">平凯云 Serverless TiDB</a> · 证据可复核 · 凭据已脱敏<br>
+1024 TiDB AIGC 黑客松 · 2026
+</footer>
+</div>
+</body>
+</html>
