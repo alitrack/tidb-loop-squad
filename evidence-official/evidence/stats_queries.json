@@ -1,0 +1,5 @@
+{
+"column_stats_usage":"SHOW STATS_COL_USAGE WHERE Db_name='squad_lab' AND Table_name='orders_big'",
+"stats_locked":"SHOW STATS_LOCKED WHERE Db_name='squad_lab' AND Table_name='orders_big'",
+"analyze_settings":"SHOW VARIABLES WHERE Variable_name IN ('tidb_analyze_version','tidb_analyze_column_options','tidb_enable_auto_analyze','tidb_auto_analyze_ratio','tidb_stats_load_sync_wait')"
+}

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>幕1 回放 · P1 事件时间线 — Loop 四人小队 vs 全表扫描</title>
+<style>
+:root{
+  --bg:#0b0f14; --panel:#111823; --panel2:#0e1520; --line:#1d2a3a;
+  --txt:#dce7f3; --dim:#7d90a8; --faint:#4a5c73;
+  --lead:#4da3ff; --insp:#3fd0a4; --diag:#ffb454; --rep:#c792ea; --human:#ff6b81;
+  --ok:#3fd0a4; --warn:#ffb454; --bad:#ff6b81;
+  --mono:"SF Mono","JetBrains Mono",Consolas,"Courier New",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.6}
+.wrap{max-width:980px;margin:0 auto;padding:48px 24px 80px}
+
+/* ===== Header ===== */
+header{border-bottom:1px solid var(--line);padding-bottom:32px;margin-bottom:36px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.25em;color:var(--faint);text-transform:uppercase;margin-bottom:14px}
+h1{font-size:30px;font-weight:700;letter-spacing:.01em}
+h1 .p1{color:var(--bad);font-family:var(--mono);font-weight:800;margin-right:10px}
+.sub{color:var(--dim);margin-top:10px;font-size:15px}
+.sub b{color:var(--txt);font-weight:600}
+.metaline{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:18px;font-family:var(--mono);font-size:12.5px;color:var(--dim)}
+.metaline span::before{content:"— ";color:var(--faint)}
+
+/* ===== Stats ===== */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-bottom:44px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px 18px 14px;position:relative;overflow:hidden}
+.stat .k{font-size:12px;color:var(--dim);margin-bottom:6px}
+.stat .v{font-family:var(--mono);font-size:26px;font-weight:700;line-height:1.15}
+.stat .d{font-size:12px;color:var(--faint);margin-top:4px}
+.stat.hero .v{background:linear-gradient(90deg,#3fd0a4,#4da3ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* ===== Roles ===== */
+.roles{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:48px}
+.role{display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 14px;font-size:13px}
+.dot{width:9px;height:9px;border-radius:50%;flex:none}
+.role b{font-weight:600}
+.role span{color:var(--faint);font-size:12px}
+.role.human{border-color:rgba(255,107,129,.4)}
+
+/* ===== Timeline ===== */
+.tl{position:relative;padding-left:26px}
+.tl::before{content:"";position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:linear-gradient(180deg,var(--line),var(--lead) 20%,var(--line) 90%)}
+.ev{position:relative;margin-bottom:26px}
+.ev::before{content:"";position:absolute;left:-26px;top:12px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2.5px solid var(--faint)}
+.ev.r-lead::before{border-color:var(--lead)} .ev.r-insp::before{border-color:var(--insp)}
+.ev.r-diag::before{border-color:var(--diag)} .ev.r-rep::before{border-color:var(--rep)}
+.ev.r-human::before{border-color:var(--human);background:var(--human);box-shadow:0 0 10px rgba(255,107,129,.5)}
+.ev.r-sys::before{border-color:var(--faint)}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 18px}
+.ev.r-human .card{border-color:rgba(255,107,129,.45);background:linear-gradient(180deg,rgba(255,107,129,.06),var(--panel) 55%)}
+.evhead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.time{font-family:var(--mono);font-size:12.5px;color:var(--faint)}
+.who{font-size:13px;font-weight:700}
+.r-lead .who{color:var(--lead)} .r-insp .who{color:var(--insp)}
+.r-diag .who{color:var(--diag)} .r-rep .who{color:var(--rep)}
+.r-human .who{color:var(--human)}
+.tag{font-family:var(--mono);font-size:10.5px;padding:1px 8px;border-radius:20px;border:1px solid var(--line);color:var(--dim)}
+.tag.auth{border-color:rgba(255,107,129,.5);color:var(--human)}
+.tag.gate{border-color:rgba(77,163,255,.5);color:var(--lead)}
+.card p{font-size:13.5px;color:var(--txt)}
+.card p+p{margin-top:6px}
+.card .mut{color:var(--dim)}
+.card .hi{color:var(--ok);font-family:var(--mono);font-size:12.5px}
+.card .bad2{color:var(--bad);font-family:var(--mono);font-size:12.5px}
+.card code{font-family:var(--mono);font-size:12px;background:var(--panel2);border:1px solid var(--line);border-radius:4px;padding:1px 6px;color:#a8c7e8}
+pre.sql{font-family:var(--mono);font-size:12px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin-top:8px;overflow-x:auto;color:#a8c7e8;line-height:1.55}
+.evd{font-family:var(--mono);font-size:11px;color:var(--faint);margin-top:8px}
+.evd::before{content:"📎 ";}
+
+/* bars */
+.bars{margin-top:10px;display:grid;gap:5px;font-family:var(--mono);font-size:11.5px}
+.bar{display:grid;grid-template-columns:150px 1fr 78px;gap:10px;align-items:center}
+.bar .lab{color:var(--dim);text-align:right}
+.bar .tr{background:var(--panel2);border-radius:3px;height:14px;overflow:hidden}
+.bar .fl{height:100%;border-radius:3px}
+.bar .num{color:var(--txt)}
+.fl.a{background:var(--bad)} .fl.b{background:#d98a4a} .fl.c{background:var(--ok)}
+
+/* footer */
+footer{border-top:1px solid var(--line);margin-top:56px;padding-top:24px;font-size:12.5px;color:var(--faint);font-family:var(--mono)}
+footer p+p{margin-top:6px}
+.lessons{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:20px 24px;margin-top:44px}
+.lessons h2{font-size:16px;margin-bottom:12px;color:var(--txt)}
+.lessons li{font-size:13.5px;color:var(--dim);margin:8px 0 8px 18px}
+.lessons li b{color:var(--txt)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Loop Agent Squad · Incident Replay · Act 1</div>
+  <h1><span class="p1">P1</span>订单查询大面积超时 — 39 分钟闭环</h1>
+  <div class="sub">四名 agent（squad-lead / inspector / diagnostician / reporter）+ 人类监督员，在平凯云 Serverless TiDB 上完成一次<b>真实事故的接管 → 取证 → 诊断 → 审批 → 修复 → 验收 → 关闭</b>全流程。</div>
+  <div class="metaline">
+    <span>2026-10-02 08:55 → 09:34</span>
+    <span>主任务 #t2 + 5 个子任务</span>
+    <span>全程 Codex 本地运行时 · 0 Loop credit</span>
+    <span>squad_lab.orders_big · 262,144 行</span>
+  </div>
+</header>
+
+<div class="stats">
+  <div class="stat hero"><div class="k">客户端耗时</div><div class="v">197.4 → 15.0 ms</div><div class="d">13× · 5 次串行均值</div></div>
+  <div class="stat"><div class="k">服务端耗时</div><div class="v">183 → 2.4 ms</div><div class="d">HISTORY 表实测</div></div>
+  <div class="stat"><div class="k">扫描量</div><div class="v">262,144 → 129 keys</div><div class="d">IndexRangeScan</div></div>
+  <div class="stat"><div class="k">人类消息</div><div class="v">4 条</div><div class="d">1 告警 + 3 授权</div></div>
+</div>
+
+<div class="roles">
+  <div class="role human"><span class="dot" style="background:var(--human)"></span><b>人类</b><span>监督 · 授权 · 拍板</span></div>
+  <div class="role"><span class="dot" style="background:var(--lead)"></span><b>squad-lead</b><span>接管 · 派单 · 验收</span></div>
+  <div class="role"><span class="dot" style="background:var(--insp)"></span><b>inspector</b><span>只读取证 · 巡检</span></div>
+  <div class="role"><span class="dot" style="background:var(--diag)"></span><b>diagnostician</b><span>根因 · 修复方案</span></div>
+  <div class="role"><span class="dot" style="background:var(--rep)"></span><b>reporter</b><span>阶段/变更报告</span></div>
+</div>
+
+<div class="tl">
+
+  <div class="ev r-human"><div class="card">
+    <div class="evhead"><span class="time">08:55</span><span class="who">人类</span><span class="tag auth">授权①告警</span></div>
+    <p><code>@squad-lead 🚨 P1 告警：业务反馈订单查询大面积超时，orders_big 相关查询延迟飙高，请立即接管排查。</code></p>
+  </div></div>
+
+  <div class="ev r-lead"><div class="card">
+    <div class="evhead"><span class="time">08:56</span><span class="who">squad-lead</span><span class="tag gate">P1 接管</span></div>
+    <p>接管并立规矩：<b>未经授权不执行 DDL、不终止会话、不改配置</b>。拆主任务 #t2，派 #t3（取证）/ #t4（诊断），并主动纠正巡检脚本口径：Top SQL 无时间过滤、无 digest、AVG_RESULT_ROWS 是返回行数不能当扫描量。</p>
+  </div></div>
+
+  <div class="ev r-insp"><div class="card">
+    <div class="evhead"><span class="time">08:58</span><span class="who">inspector</span><span class="tag">#t3 首批证据</span></div>
+    <p>锁定目标 SQL（digest <code>8c720334…</code>）：<code>SELECT COUNT(*), SUM(amount) FROM squad_lab.orders_big WHERE note LIKE ? AND status = ?</code></p>
+    <p class="mut">近 30 分钟三窗口合计 <b>985 次</b>、总耗时 <b>180,678 ms</b>、加权平均 <span class="bad2">183.4 ms</span>、最大 203.2 ms；每次 <span class="bad2">AVG_PROCESSED_KEYS = 262,144</span>（全表扫描），返回仅 1 行。</p>
+    <div class="evd">STATEMENTS_SUMMARY_HISTORY · 三窗口原始纳秒汇总</div>
+  </div></div>
+
+  <div class="ev r-diag"><div class="card">
+    <div class="evhead"><span class="time">08:59 – 09:00</span><span class="who">diagnostician</span><span class="tag">#t4 机制闭合</span></div>
+    <p>结构核验：表仅 <code>PRIMARY(id)</code> 无二级索引；实际谓词 <code>note LIKE '%-042'</code> —— <b>前置通配符使索引失效</b>。普通 EXPLAIN：<code>TableFullScan estRows=262144</code>。历史 PLAN 实测：扫 262,144 keys → 过滤 129 行 → 聚合 1 行，root 189.1 ms。</p>
+    <p class="mut">同时诚实划界：0.19s 的 DB 样本不足以解释"大面积应用超时"的完整因果，需应用侧 trace。</p>
+    <div class="evd">SHOW INDEX · EXPLAIN · STATEMENTS_SUMMARY_HISTORY.PLAN</div>
+  </div></div>
+
+  <div class="ev r-lead"><div class="card">
+    <div class="evhead"><span class="time">09:01 – 09:03</span><span class="who">squad-lead</span><span class="tag gate">#t3 验收</span></div>
+    <p>读附件、按原始纳秒值<b>重算</b>全部指标（自查纠错 0.001ms 舍入差）。完整巡检 10 项全绿：锁等待 0、死锁 0、耗时会话 0、内存水位 4.4%。派 reporter #t5 出阶段报告。</p>
+  </div></div>
+
+  <div class="ev r-diag"><div class="card">
+    <div class="evhead"><span class="time">09:04</span><span class="who">diagnostician</span><span class="tag">#t4 方案交付</span></div>
+    <p>修复方案：<b>虚拟生成列</b> <code>note_suffix4 = RIGHT(note,4)</code> + 覆盖索引 <code>(status, note_suffix4, amount)</code>，查询显式改用尾缀列；含风险、回滚顺序（先撤查询 → DROP INDEX → DROP COLUMN）、复测门槛。15 项检查 14 成功、1 项 1064 单列不隐瞒。</p>
+  </div></div>
+
+  <div class="ev r-human"><div class="card">
+    <div class="evhead"><span class="time">09:06</span><span class="who">人类</span><span class="tag auth">授权②修复</span></div>
+    <p><code>授权执行修复方案：按 diagnostician 提议创建虚拟生成列和联合覆盖索引，先隔离验证再上生产，注意风险与回滚预案。完成后复测并回报 25ms 级对比数据。</code></p>
+  </div></div>
+
+  <div class="ev r-human"><div class="card">
+    <div class="evhead"><span class="time">09:10</span><span class="who">人类</span><span class="tag auth">授权③合并执行</span></div>
+    <p><code>本环境即为演示环境，隔离验证与生产合并执行：直接创建生成列与索引并复测同一条业务 SQL。</code></p>
+  </div></div>
+
+  <div class="ev r-sys"><div class="card">
+    <div class="evhead"><span class="time">09:11 – 09:19</span><span class="who">插曲</span><span class="tag">Codex 额度耗尽</span></div>
+    <p class="mut">diagnostician 静默约 8 分钟。人类 09:15 催办问卡点、09:18 确认额度恢复；agent 恢复后先补报进度（12 个边界样本谓词一致性、原 SQL 基线 5 次 197.354ms）再继续执行，不跳步骤。</p>
+  </div></div>
+
+  <div class="ev r-diag"><div class="card">
+    <div class="evhead"><span class="time">09:19 – 09:22</span><span class="who">diagnostician</span><span class="tag">#t6 DDL + 复测</span></div>
+    <pre class="sql">ALTER TABLE squad_lab.orders_big
+  ADD COLUMN note_suffix4 VARCHAR(4)
+  GENERATED ALWAYS AS (RIGHT(note,4)) VIRTUAL;
+CREATE INDEX idx_orders_status_suffix4_amount
+  ON squad_lab.orders_big(status, note_suffix4, amount);
+ANALYZE TABLE squad_lab.orders_big COLUMNS status,note,note_suffix4,amount;</pre>
+    <p class="mut">DDL JOB 131/132 均 synced（建索引 21.8s）。同连接、同 REPEATABLE-READ 快照交替串行各 5 次实测：</p>
+    <div class="bars">
+      <div class="bar"><span class="lab">变更前 · 原样 LIKE</span><div class="tr"><div class="fl a" style="width:100%"></div></div><span class="num">197.354 ms</span></div>
+      <div class="bar"><span class="lab">变更后 · 原样 LIKE</span><div class="tr"><div class="fl b" style="width:95%"></div></div><span class="num">187.787 ms</span></div>
+      <div class="bar"><span class="lab">变更后 · 显式尾缀</span><div class="tr"><div class="fl c" style="width:9.8%"></div></div><span class="num">19.429 ms</span></div>
+    </div>
+    <p class="mut" style="margin-top:8px">全部返回 COUNT=129、SUM=12771.00（等价性 ✅）。<b>诚实归因：</b>只有改写 SQL 达标，原样 LIKE 仍全表扫——"不能用改写 SQL 的数据冒称原 SQL 已加速"。</p>
+    <div class="evd">orders_big_repair_evidence_20261002.json</div>
+  </div></div>
+
+  <div class="ev r-rep"><div class="card">
+    <div class="evhead"><span class="time">09:09 / 09:29</span><span class="who">reporter</span><span class="tag">#t5 两版报告</span></div>
+    <p>阶段报告（6 页，截止 09:06:49）+ 变更后报告（5 页，截止 09:23:33），Markdown + PDF，含时间线、证据索引、回滚顺序、复测条件；严格区分"性能门槛 = 待验证目标"与"已达成结果"。</p>
+    <div class="evd">p1-orders-big-stage-report · p1-orders-big-post-change-report（PDF）</div>
+  </div></div>
+
+  <div class="ev r-human"><div class="card">
+    <div class="evhead"><span class="time">09:25</span><span class="who">人类</span><span class="tag auth">授权④切换</span></div>
+    <p><code>批准查询改写：应用侧立即切换为显式尾缀列查询，视为演示环境的应用发布。请复测确认业务走新索引后关闭 P1。</code></p>
+  </div></div>
+
+  <div class="ev r-insp"><div class="card">
+    <div class="evhead"><span class="time">09:31 – 09:33</span><span class="who">inspector</span><span class="tag">#t7 切换验收</span></div>
+    <p>演示入口落地 <code>demo/orders_big_active.sql</code>，带唯一追踪注释 <code>demo_release_t7_20261002T093203</code> 执行。新入口 5 次全部 &lt; 25ms：<span class="hi">均值 15.017 ms</span>（14.275–16.973）。HISTORY 命中唯一标记：实际走 <code>IndexRangeScan actRows=129</code>，服务端均值 <span class="hi">2.388 ms</span>；同快照新旧结果一致（COUNT=129 / SUM=12771.00）。文件哈希已读回核验。</p>
+    <div class="evd">demo_release_20261002_093203.json · STATEMENTS_SUMMARY_HISTORY 定向命中</div>
+  </div></div>
+
+  <div class="ev r-lead"><div class="card">
+    <div class="evhead"><span class="time">09:34</span><span class="who">squad-lead</span><span class="tag gate" style="border-color:rgba(63,208,164,.5);color:var(--ok)">✅ P1 关闭</span></div>
+    <p>核验入口哈希、重算计时后宣告关闭。<b>边界声明：</b>关闭的是演示环境事件，不外推真实生产 SLO；原样 LIKE 仍慢，通过的是已切换的显式尾缀查询。</p>
+  </div></div>
+
+</div>
+
+<div class="lessons">
+  <h2>为什么这次演示值得看</h2>
+  <ol>
+    <li><b>真实失败 + 诚实归因</b>——加索引没有救原 SQL（前置通配 + 选择度），小队如实报"原 SQL 未达标"，不拿改写 SQL 的 13× 冒称原查询加速。</li>
+    <li><b>审批链完整</b>——4 条人类消息驱动全程：告警 → 授权修复 → 合并执行 → 批准切换；agent 侧无一步越权（DDL 前两次请示）。</li>
+    <li><b>证据链可复核</b>——每个结论带表名 + 指标值 + 附件；队长按原始纳秒重算，reporter 的报告严格区分"截点快照 / 新证据"。</li>
+    <li><b>事故也真实</b>——中途 Codex 额度耗尽静默 8 分钟，人类催办后恢复，全程保留在实录里。</li>
+  </ol>
+</div>
+
+<footer>
+  <p>EVIDENCE: channel_transcript_full.txt (464 msgs) · inspect_20261002_085715.json · orders_big_repair_evidence_20261002.json · demo_release_20261002_093203.json · 2× reporter PDF</p>
+  <p>RUNTIME: 4× Codex agents, local runtime, 0 Loop credit · CLUSTER: pingkai cloud Serverless TiDB · RECORDED 2026-10-02 08:55–09:34 UTC+8</p>
+</footer>
+
+</div>
+</body>
+</html>

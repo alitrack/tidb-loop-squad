@@ -1,0 +1,206 @@
+{
+  "collection_start": "2026-10-02T08:57:52.085817+08:00",
+  "queries": {
+    "time_version": "SELECT NOW(6) db_now, UTC_TIMESTAMP(6) db_utc, @@session.time_zone session_tz, @@system_time_zone system_tz, DATABASE() current_db, TIDB_VERSION() tidb_version",
+    "locate_table": "SELECT TABLE_SCHEMA,TABLE_NAME,TABLE_ROWS,CREATE_TIME,UPDATE_TIME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME='orders_big'",
+    "ddl_recent": "SELECT JOB_ID,DB_NAME,TABLE_NAME,JOB_TYPE,STATE,CREATE_TIME,START_TIME,END_TIME FROM INFORMATION_SCHEMA.DDL_JOBS WHERE TABLE_NAME='orders_big' ORDER BY JOB_ID DESC LIMIT 20",
+    "create_table": "SHOW CREATE TABLE squad_lab.orders_big",
+    "indexes": "SHOW INDEX FROM squad_lab.orders_big",
+    "stats_meta": "SHOW STATS_META WHERE Db_name='squad_lab' AND Table_name='orders_big'",
+    "stats_health": "SHOW STATS_HEALTHY WHERE Db_name='squad_lab' AND Table_name='orders_big'",
+    "stats_histograms": "SHOW STATS_HISTOGRAMS WHERE Db_name='squad_lab' AND Table_name='orders_big'"
+  },
+  "results": {
+    "time_version": {
+      "ok": true,
+      "rows": [
+        {
+          "db_now": "2026-10-02 08:57:52.360159",
+          "db_utc": "2026-10-02 00:57:52.360160",
+          "session_tz": "+08:00",
+          "system_tz": "UTC",
+          "current_db": "sys",
+          "tidb_version": "Release Version: v8.5.3-serverless\nEdition: Community\nGit Commit Hash: 20260803-67947477d585a10f4f64f9365b8147fc82fc081c\nGit Branch: None\nUTC Build Time: 2026-08-03 06:13:11\nGoVersion: go1.24.4\nRace Enabled: false\nCheck Table Before Drop: false\nStore: tikv"
+        }
+      ]
+    },
+    "locate_table": {
+      "ok": true,
+      "rows": [
+        {
+          "TABLE_SCHEMA": "squad_lab",
+          "TABLE_NAME": "orders_big",
+          "TABLE_ROWS": 262144,
+          "CREATE_TIME": "2026-09-30 15:00:47",
+          "UPDATE_TIME": null
+        }
+      ]
+    },
+    "ddl_recent": {
+      "ok": true,
+      "rows": [
+        {
+          "JOB_ID": 130,
+          "DB_NAME": "squad_lab",
+          "TABLE_NAME": "orders_big",
+          "JOB_TYPE": "create table",
+          "STATE": "synced",
+          "CREATE_TIME": "2026-09-30 15:00:47.023000",
+          "START_TIME": "2026-09-30 15:00:47.023000",
+          "END_TIME": "2026-09-30 15:00:47.073000"
+        },
+        {
+          "JOB_ID": 128,
+          "DB_NAME": "squad_lab",
+          "TABLE_NAME": "orders_big",
+          "JOB_TYPE": "drop table",
+          "STATE": "synced",
+          "CREATE_TIME": "2026-09-30 15:00:46.723000",
+          "START_TIME": "2026-09-30 15:00:46.723000",
+          "END_TIME": "2026-09-30 15:00:46.923000"
+        },
+        {
+          "JOB_ID": 127,
+          "DB_NAME": "squad_lab",
+          "TABLE_NAME": "orders_big",
+          "JOB_TYPE": "add index",
+          "STATE": "synced",
+          "CREATE_TIME": "2026-09-30 14:35:50.423000",
+          "START_TIME": "2026-09-30 14:35:50.423000",
+          "END_TIME": "2026-09-30 14:36:17.774000"
+        },
+        {
+          "JOB_ID": 126,
+          "DB_NAME": "squad_lab",
+          "TABLE_NAME": "orders_big",
+          "JOB_TYPE": "add column",
+          "STATE": "synced",
+          "CREATE_TIME": "2026-09-30 14:35:50.173000",
+          "START_TIME": "2026-09-30 14:35:50.173000",
+          "END_TIME": "2026-09-30 14:35:50.373000"
+        },
+        {
+          "JOB_ID": 125,
+          "DB_NAME": "squad_lab",
+          "TABLE_NAME": "orders_big",
+          "JOB_TYPE": "create table",
+          "STATE": "synced",
+          "CREATE_TIME": "2026-09-30 13:57:22.223000",
+          "START_TIME": "2026-09-30 13:57:22.223000",
+          "END_TIME": "2026-09-30 13:57:22.323000"
+        },
+        {
+          "JOB_ID": 123,
+          "DB_NAME": "squad_lab",
+          "TABLE_NAME": "orders_big",
+          "JOB_TYPE": "drop table",
+          "STATE": "synced",
+          "CREATE_TIME": "2026-09-30 13:57:21.773000",
+          "START_TIME": "2026-09-30 13:57:21.773000",
+          "END_TIME": "2026-09-30 13:57:21.973000"
+        },
+        {
+          "JOB_ID": 122,
+          "DB_NAME": "squad_lab",
+          "TABLE_NAME": "orders_big",
+          "JOB_TYPE": "add index",
+          "STATE": "synced",
+          "CREATE_TIME": "2026-09-30 12:03:02.774000",
+          "START_TIME": "2026-09-30 12:03:02.823000",
+          "END_TIME": "2026-09-30 12:03:27.173000"
+        },
+        {
+          "JOB_ID": 121,
+          "DB_NAME": "squad_lab",
+          "TABLE_NAME": "orders_big",
+          "JOB_TYPE": "create table",
+          "STATE": "synced",
+          "CREATE_TIME": "2026-09-30 11:38:38.273000",
+          "START_TIME": "2026-09-30 11:38:38.323000",
+          "END_TIME": "2026-09-30 11:38:38.373000"
+        }
+      ]
+    },
+    "create_table": {
+      "ok": true,
+      "rows": [
+        {
+          "Table": "orders_big",
+          "Create Table": "CREATE TABLE `orders_big` (\n  `id` bigint NOT NULL /*T![auto_rand] AUTO_RANDOM(5) */,\n  `user_id` bigint DEFAULT NULL,\n  `amount` decimal(10,2) DEFAULT NULL,\n  `status` varchar(16) DEFAULT NULL,\n  `note` varchar(256) DEFAULT NULL,\n  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`) /*T![clustered_index] CLUSTERED */\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin /*T![auto_rand_base] AUTO_RANDOM_BASE=991407 */"
+        }
+      ]
+    },
+    "indexes": {
+      "ok": true,
+      "rows": [
+        {
+          "Table": "orders_big",
+          "Non_unique": 0,
+          "Key_name": "PRIMARY",
+          "Seq_in_index": 1,
+          "Column_name": "id",
+          "Collation": "A",
+          "Cardinality": 258464,
+          "Sub_part": null,
+          "Packed": null,
+          "Null": "",
+          "Index_type": "BTREE",
+          "Comment": "",
+          "Index_comment": "",
+          "Visible": "YES",
+          "Expression": null,
+          "Clustered": "YES",
+          "Global": "NO"
+        }
+      ]
+    },
+    "stats_meta": {
+      "ok": true,
+      "rows": [
+        {
+          "Db_name": "squad_lab",
+          "Table_name": "orders_big",
+          "Partition_name": "",
+          "Update_time": "2026-09-30 07:02:34",
+          "Modify_count": 0,
+          "Row_count": 262144,
+          "Last_analyze_time": "2026-09-30 07:02:34"
+        }
+      ]
+    },
+    "stats_health": {
+      "ok": true,
+      "rows": [
+        {
+          "Db_name": "squad_lab",
+          "Table_name": "orders_big",
+          "Partition_name": "",
+          "Healthy": 100
+        }
+      ]
+    },
+    "stats_histograms": {
+      "ok": true,
+      "rows": [
+        {
+          "Db_name": "squad_lab",
+          "Table_name": "orders_big",
+          "Partition_name": "",
+          "Column_name": "id",
+          "Is_index": 0,
+          "Update_time": "2026-09-30 07:02:34",
+          "Distinct_count": 258464,
+          "Null_count": 0,
+          "Avg_col_size": 8.0,
+          "Correlation": 1.0,
+          "Load_status": "allLoaded",
+          "Total_mem_usage": 10536,
+          "Hist_mem_usage": 10536,
+          "Topn_mem_usage": 0,
+          "Cms_mem_usage": 0
+        }
+      ]
+    }
+  },
+  "collection_end": "2026-10-02T08:57:52.556252+08:00"
+}

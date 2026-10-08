@@ -1,0 +1,10 @@
+{
+"time_version":"SELECT NOW(6) db_now, UTC_TIMESTAMP(6) db_utc, @@session.time_zone session_tz, @@system_time_zone system_tz, DATABASE() current_db, TIDB_VERSION() tidb_version",
+"locate_table":"SELECT TABLE_SCHEMA,TABLE_NAME,TABLE_ROWS,CREATE_TIME,UPDATE_TIME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME='orders_big'",
+"ddl_recent":"SELECT JOB_ID,DB_NAME,TABLE_NAME,JOB_TYPE,STATE,CREATE_TIME,START_TIME,END_TIME FROM INFORMATION_SCHEMA.DDL_JOBS WHERE TABLE_NAME='orders_big' ORDER BY JOB_ID DESC LIMIT 20",
+"create_table":"SHOW CREATE TABLE squad_lab.orders_big",
+"indexes":"SHOW INDEX FROM squad_lab.orders_big",
+"stats_meta":"SHOW STATS_META WHERE Db_name='squad_lab' AND Table_name='orders_big'",
+"stats_health":"SHOW STATS_HEALTHY WHERE Db_name='squad_lab' AND Table_name='orders_big'",
+"stats_histograms":"SHOW STATS_HISTOGRAMS WHERE Db_name='squad_lab' AND Table_name='orders_big'"
+}

@@ -1,0 +1,221 @@
+{
+  "task": "#t7",
+  "scope": "User-authorized demo SQL execution entry, NOT an unknown production application deployment",
+  "entry_path": "/Users/sa/.loop/agents/agt_y1v34rfr8w08be/demo/orders_big_active.sql",
+  "entry_sha256": "1fa5ee8edd7fe8c9743b05bbaed6d0c573904857a2fc8405d55804b19d0da238",
+  "entry_materialized_at": "2026-10-02T09:31:25+08:00",
+  "started_at": "2026-10-02T09:32:03.432343+08:00",
+  "new_sql": "SELECT COUNT(*), SUM(amount) FROM squad_lab.orders_big\nWHERE note_suffix4='-042' AND status='new';",
+  "executed_new_sql": "/* demo_release_t7_20261002T093203 */ SELECT COUNT(*), SUM(amount) FROM squad_lab.orders_big\nWHERE note_suffix4='-042' AND status='new';",
+  "old_sql_for_equivalence_only": "SELECT COUNT(*), SUM(amount) FROM squad_lab.orders_big WHERE note LIKE '%-042' AND status='new'",
+  "events": [
+    {
+      "name": "connection_and_clock",
+      "sql": "SELECT NOW(6) AS db_now, UTC_TIMESTAMP(6) AS db_utc, CONNECTION_ID() AS connection_id, DATABASE() AS default_schema, @@session.time_zone AS session_time_zone, @@tx_isolation AS isolation_level",
+      "collected_at": "2026-10-02T09:32:04.285038+08:00",
+      "wall_ns": 12847875,
+      "wall_ms": 12.847875,
+      "rows": [
+        {
+          "db_now": "2026-10-02 09:32:04.378952",
+          "db_utc": "2026-10-02 01:32:04.378953",
+          "connection_id": 2348810242,
+          "default_schema": "sys",
+          "session_time_zone": "+08:00",
+          "isolation_level": "REPEATABLE-READ"
+        }
+      ]
+    },
+    {
+      "name": "new_explain",
+      "sql": "EXPLAIN SELECT COUNT(*), SUM(amount) FROM squad_lab.orders_big\nWHERE note_suffix4='-042' AND status='new';",
+      "collected_at": "2026-10-02T09:32:04.326310+08:00",
+      "wall_ns": 41191500,
+      "wall_ms": 41.1915,
+      "rows": [
+        {
+          "id": "StreamAgg_10",
+          "estRows": "1.00",
+          "task": "root",
+          "access object": "",
+          "operator info": "funcs:count(1)->Column#8, funcs:sum(squad_lab.orders_big.amount)->Column#9"
+        },
+        {
+          "id": "└─IndexReader_15",
+          "estRows": "1.00",
+          "task": "root",
+          "access object": "",
+          "operator info": "index:IndexRangeScan_14"
+        },
+        {
+          "id": "  └─IndexRangeScan_14",
+          "estRows": "1.00",
+          "task": "cop[tikv]",
+          "access object": "table:orders_big, index:idx_orders_status_suffix4_amount(status, note_suffix4, amount)",
+          "operator info": "range:[\"new\" \"-042\",\"new\" \"-042\"], keep order:false"
+        }
+      ]
+    },
+    {
+      "name": "consistent_snapshot_begin",
+      "sql": "START TRANSACTION WITH CONSISTENT SNAPSHOT",
+      "collected_at": "2026-10-02T09:32:04.359051+08:00",
+      "wall_ns": 13845833,
+      "wall_ms": 13.845833,
+      "rows": []
+    },
+    {
+      "name": "old_equivalence",
+      "sql": "SELECT COUNT(*), SUM(amount) FROM squad_lab.orders_big WHERE note LIKE '%-042' AND status='new'",
+      "collected_at": "2026-10-02T09:32:04.553641+08:00",
+      "wall_ns": 194406375,
+      "wall_ms": 194.406375,
+      "rows": [
+        {
+          "COUNT(*)": 129,
+          "SUM(amount)": "12771.00"
+        }
+      ]
+    },
+    {
+      "name": "snapshot_before_new",
+      "sql": "SELECT @@tidb_current_ts AS snapshot_ts, CONNECTION_ID() AS connection_id",
+      "collected_at": "2026-10-02T09:32:04.566711+08:00",
+      "wall_ns": 12972167,
+      "wall_ms": 12.972167,
+      "rows": [
+        {
+          "snapshot_ts": "469474928079405059",
+          "connection_id": 2348810242
+        }
+      ]
+    },
+    {
+      "name": "active_entry_run_1",
+      "sql": "/* demo_release_t7_20261002T093203 */ SELECT COUNT(*), SUM(amount) FROM squad_lab.orders_big\nWHERE note_suffix4='-042' AND status='new';",
+      "collected_at": "2026-10-02T09:32:04.581283+08:00",
+      "wall_ns": 14431958,
+      "wall_ms": 14.431958,
+      "rows": [
+        {
+          "COUNT(*)": 129,
+          "SUM(amount)": "12771.00"
+        }
+      ]
+    },
+    {
+      "name": "active_entry_run_2",
+      "sql": "/* demo_release_t7_20261002T093203 */ SELECT COUNT(*), SUM(amount) FROM squad_lab.orders_big\nWHERE note_suffix4='-042' AND status='new';",
+      "collected_at": "2026-10-02T09:32:04.596319+08:00",
+      "wall_ns": 14836000,
+      "wall_ms": 14.836,
+      "rows": [
+        {
+          "COUNT(*)": 129,
+          "SUM(amount)": "12771.00"
+        }
+      ]
+    },
+    {
+      "name": "active_entry_run_3",
+      "sql": "/* demo_release_t7_20261002T093203 */ SELECT COUNT(*), SUM(amount) FROM squad_lab.orders_big\nWHERE note_suffix4='-042' AND status='new';",
+      "collected_at": "2026-10-02T09:32:04.611015+08:00",
+      "wall_ns": 14570458,
+      "wall_ms": 14.570458,
+      "rows": [
+        {
+          "COUNT(*)": 129,
+          "SUM(amount)": "12771.00"
+        }
+      ]
+    },
+    {
+      "name": "active_entry_run_4",
+      "sql": "/* demo_release_t7_20261002T093203 */ SELECT COUNT(*), SUM(amount) FROM squad_lab.orders_big\nWHERE note_suffix4='-042' AND status='new';",
+      "collected_at": "2026-10-02T09:32:04.628065+08:00",
+      "wall_ns": 16973125,
+      "wall_ms": 16.973125,
+      "rows": [
+        {
+          "COUNT(*)": 129,
+          "SUM(amount)": "12771.00"
+        }
+      ]
+    },
+    {
+      "name": "active_entry_run_5",
+      "sql": "/* demo_release_t7_20261002T093203 */ SELECT COUNT(*), SUM(amount) FROM squad_lab.orders_big\nWHERE note_suffix4='-042' AND status='new';",
+      "collected_at": "2026-10-02T09:32:04.642405+08:00",
+      "wall_ns": 14274583,
+      "wall_ms": 14.274583,
+      "rows": [
+        {
+          "COUNT(*)": 129,
+          "SUM(amount)": "12771.00"
+        }
+      ]
+    },
+    {
+      "name": "snapshot_after_new",
+      "sql": "SELECT @@tidb_current_ts AS snapshot_ts, CONNECTION_ID() AS connection_id",
+      "collected_at": "2026-10-02T09:32:04.656634+08:00",
+      "wall_ns": 14177292,
+      "wall_ms": 14.177292,
+      "rows": [
+        {
+          "snapshot_ts": "469474928079405059",
+          "connection_id": 2348810242
+        }
+      ]
+    },
+    {
+      "name": "post_switch_history_attempt_1",
+      "sql": "SELECT NOW(6) AS collected_at, SUMMARY_BEGIN_TIME, SUMMARY_END_TIME, FIRST_SEEN, LAST_SEEN,\nDIGEST, PLAN_DIGEST, DIGEST_TEXT, QUERY_SAMPLE_TEXT, EXEC_COUNT,\nSUM_LATENCY, AVG_LATENCY, MAX_LATENCY, AVG_PROCESSED_KEYS, AVG_TOTAL_KEYS, AVG_RESULT_ROWS,\nSUM_ERRORS, SUM_WARNINGS, PLAN\nFROM INFORMATION_SCHEMA.STATEMENTS_SUMMARY_HISTORY\nWHERE LAST_SEEN >= '2026-10-02 09:32:04'\nAND DIGEST_TEXT LIKE 'select count%'\nAND DIGEST_TEXT LIKE '%`orders_big`%'\nAND DIGEST_TEXT LIKE '%`note_suffix4`%'\nORDER BY LAST_SEEN DESC LIMIT 10",
+      "source": "INFORMATION_SCHEMA.STATEMENTS_SUMMARY_HISTORY",
+      "client_started_at": "2026-10-02T09:32:28.746734+08:00",
+      "ok": true,
+      "rows": [
+        {
+          "collected_at": "2026-10-02 09:32:28.994805",
+          "SUMMARY_BEGIN_TIME": "2026-10-02 09:32:03",
+          "SUMMARY_END_TIME": "2026-10-02 09:32:28",
+          "FIRST_SEEN": "2026-10-02 09:32:04",
+          "LAST_SEEN": "2026-10-02 09:32:04",
+          "DIGEST": "b5f88a178c1340062c563edd6771f019b16b3ab4d31b74c4e82d3fa4071c368c",
+          "PLAN_DIGEST": "502a48d1ba73126fb44d4459ad9b8b0c2acd0cb7ab8e9df214fe54925cfc2484",
+          "DIGEST_TEXT": "select count ( ? ) , sum ( `amount` ) from `squad_lab` . `orders_big` where `note_suffix4` = ? and status = ?",
+          "QUERY_SAMPLE_TEXT": "/* demo_release_t7_20261002T093203 */ SELECT COUNT(*), SUM(amount) FROM squad_lab.orders_big\nWHERE note_suffix4='-042' AND status='new';",
+          "EXEC_COUNT": 5,
+          "SUM_LATENCY": 11938852,
+          "AVG_LATENCY": 2387770,
+          "MAX_LATENCY": 2531903,
+          "AVG_PROCESSED_KEYS": 129,
+          "AVG_TOTAL_KEYS": 131,
+          "AVG_RESULT_ROWS": 1,
+          "SUM_ERRORS": 0,
+          "SUM_WARNINGS": 0,
+          "PLAN": "\tid                   \ttask     \testRows\toperator info                                                                                                                              \tactRows\texecution info                                                                                                                                                                                                                                                         \tmemory \tdisk\n\tStreamAgg_10         \troot     \t1      \tfuncs:count(1)->Column#8, funcs:sum(squad_lab.orders_big.amount)->Column#9                                                                 \t1      \ttime:1.63ms, loops:2                                                                                                                                                                                                                                                   \t10.6 KB\tN/A\n\t└─IndexReader_15     \troot     \t1      \tindex:IndexRangeScan_14                                                                                                                    \t129    \ttime:1.61ms, loops:2, cop_task: {num: 1, max: 1.54ms, proc_keys: 129, tot_proc: 91.2µs, tot_wait: 26.4µs, copr_cache_hit_ratio: 0.00, build_task_duration: 8.25µs, max_distsql_concurrency: 1}, rpc_info:{Cop:{num_rpc:1, total_time:1.52ms}}                       \t8.34 KB\tN/A\n\t  └─IndexRangeScan_14\tcop[tikv]\t1      \ttable:orders_big, index:idx_orders_status_suffix4_amount(status, note_suffix4, amount), range:[\"new\" \"-042\",\"new\" \"-042\"], keep order:false\t129    \ttikv_task:{time:0s, loops:3}, scan_detail: {total_process_keys: 129, total_process_keys_size: 11610, total_keys: 131, get_snapshot_time: 11.2µs, rocksdb: {block: {}}}, time_detail: {total_process_time: 91.2µs, total_wait_time: 26.4µs, tikv_wall_time: 171.6µs}\tN/A    \tN/A"
+        }
+      ]
+    }
+  ],
+  "switched_at": "2026-10-02T09:32:04.566796+08:00",
+  "same_snapshot_verified": true,
+  "equivalence_verified": true,
+  "new_wall_ms_summary": {
+    "values": [
+      14.431958,
+      14.836,
+      14.570458,
+      16.973125,
+      14.274583
+    ],
+    "mean": 15.0172248,
+    "median": 14.570458,
+    "min": 14.274583,
+    "max": 16.973125,
+    "mean_under_25ms": true
+  },
+  "ok": true,
+  "completed_at": "2026-10-02T09:32:04.669958+08:00"
+}

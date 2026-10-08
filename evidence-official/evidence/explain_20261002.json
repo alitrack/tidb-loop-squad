@@ -1,0 +1,95 @@
+{
+  "collection_start": "2026-10-02T09:00:05.081887+08:00",
+  "queries": {
+    "explain_exact": "EXPLAIN FORMAT='brief' SELECT COUNT(*), SUM(amount) FROM squad_lab.orders_big WHERE note LIKE '%-042' AND status='new'",
+    "explain_warnings": "SHOW WARNINGS",
+    "explain_suffix_rewrite_no_index": "EXPLAIN FORMAT='brief' SELECT COUNT(*), SUM(amount) FROM squad_lab.orders_big WHERE RIGHT(note,4)='-042' AND status='new'"
+  },
+  "results": {
+    "explain_exact": {
+      "ok": true,
+      "rows": [
+        {
+          "id": "StreamAgg",
+          "estRows": "1.00",
+          "task": "root",
+          "access object": "",
+          "operator info": "funcs:count(Column#11)->Column#7, funcs:sum(Column#12)->Column#8"
+        },
+        {
+          "id": "└─TableReader",
+          "estRows": "1.00",
+          "task": "root",
+          "access object": "",
+          "operator info": "data:StreamAgg"
+        },
+        {
+          "id": "  └─StreamAgg",
+          "estRows": "1.00",
+          "task": "cop[tikv]",
+          "access object": "",
+          "operator info": "funcs:count(1)->Column#11, funcs:sum(squad_lab.orders_big.amount)->Column#12"
+        },
+        {
+          "id": "    └─Selection",
+          "estRows": "209.72",
+          "task": "cop[tikv]",
+          "access object": "",
+          "operator info": "eq(squad_lab.orders_big.status, \"new\"), like(squad_lab.orders_big.note, \"%-042\", 92)"
+        },
+        {
+          "id": "      └─TableFullScan",
+          "estRows": "262144.00",
+          "task": "cop[tikv]",
+          "access object": "table:orders_big",
+          "operator info": "keep order:false, stats:partial[status:unInitialized, note:unInitialized]"
+        }
+      ]
+    },
+    "explain_warnings": {
+      "ok": true,
+      "rows": []
+    },
+    "explain_suffix_rewrite_no_index": {
+      "ok": true,
+      "rows": [
+        {
+          "id": "StreamAgg",
+          "estRows": "1.00",
+          "task": "root",
+          "access object": "",
+          "operator info": "funcs:count(Column#11)->Column#7, funcs:sum(Column#12)->Column#8"
+        },
+        {
+          "id": "└─TableReader",
+          "estRows": "1.00",
+          "task": "root",
+          "access object": "",
+          "operator info": "data:StreamAgg"
+        },
+        {
+          "id": "  └─StreamAgg",
+          "estRows": "1.00",
+          "task": "cop[tikv]",
+          "access object": "",
+          "operator info": "funcs:count(1)->Column#11, funcs:sum(squad_lab.orders_big.amount)->Column#12"
+        },
+        {
+          "id": "    └─Selection",
+          "estRows": "209.72",
+          "task": "cop[tikv]",
+          "access object": "",
+          "operator info": "eq(right(squad_lab.orders_big.note, 4), \"-042\"), eq(squad_lab.orders_big.status, \"new\")"
+        },
+        {
+          "id": "      └─TableFullScan",
+          "estRows": "262144.00",
+          "task": "cop[tikv]",
+          "access object": "table:orders_big",
+          "operator info": "keep order:false, stats:partial[status:unInitialized, note:unInitialized]"
+        }
+      ]
+    }
+  },
+  "collection_end": "2026-10-02T09:00:05.273808+08:00"
+}

@@ -1,0 +1,44 @@
+{
+  "collection_start": "2026-10-02T08:59:30.656473+08:00",
+  "queries": {
+    "column_stats_usage": "SHOW STATS_COL_USAGE WHERE Db_name='squad_lab' AND Table_name='orders_big'",
+    "stats_locked": "SHOW STATS_LOCKED WHERE Db_name='squad_lab' AND Table_name='orders_big'",
+    "analyze_settings": "SHOW VARIABLES WHERE Variable_name IN ('tidb_analyze_version','tidb_analyze_column_options','tidb_enable_auto_analyze','tidb_auto_analyze_ratio','tidb_stats_load_sync_wait')"
+  },
+  "results": {
+    "column_stats_usage": {
+      "ok": false,
+      "error": "(1064, 'You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use line 1 column 20 near \"STATS_COL_USAGE WHERE Db_name=\\'squad_lab\\' AND Table_name=\\'orders_big\\'\" ')"
+    },
+    "stats_locked": {
+      "ok": true,
+      "rows": []
+    },
+    "analyze_settings": {
+      "ok": true,
+      "rows": [
+        {
+          "Variable_name": "tidb_analyze_column_options",
+          "Value": "PREDICATE"
+        },
+        {
+          "Variable_name": "tidb_analyze_version",
+          "Value": "2"
+        },
+        {
+          "Variable_name": "tidb_auto_analyze_ratio",
+          "Value": "0.5"
+        },
+        {
+          "Variable_name": "tidb_enable_auto_analyze",
+          "Value": "ON"
+        },
+        {
+          "Variable_name": "tidb_stats_load_sync_wait",
+          "Value": "500"
+        }
+      ]
+    }
+  },
+  "collection_end": "2026-10-02T08:59:30.901852+08:00"
+}

@@ -1,0 +1,370 @@
+{
+  "started_at": "2026-10-02T09:19:07.870990+08:00",
+  "checks": [
+    {
+      "name": "structure_before",
+      "sql": "SHOW CREATE TABLE squad_lab.orders_big",
+      "at": "2026-10-02T09:19:08.110013+08:00",
+      "rows": [
+        {
+          "Table": "orders_big",
+          "Create Table": "CREATE TABLE `orders_big` (\n  `id` bigint NOT NULL /*T![auto_rand] AUTO_RANDOM(5) */,\n  `user_id` bigint DEFAULT NULL,\n  `amount` decimal(10,2) DEFAULT NULL,\n  `status` varchar(16) DEFAULT NULL,\n  `note` varchar(256) DEFAULT NULL,\n  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`) /*T![clustered_index] CLUSTERED */\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin /*T![auto_rand_base] AUTO_RANDOM_BASE=991407 */"
+        }
+      ],
+      "ok": true,
+      "wall_ms": 21.788332611322403
+    },
+    {
+      "name": "indexes_before",
+      "sql": "SHOW INDEX FROM squad_lab.orders_big",
+      "at": "2026-10-02T09:19:08.132707+08:00",
+      "rows": [
+        {
+          "Table": "orders_big",
+          "Non_unique": 0,
+          "Key_name": "PRIMARY",
+          "Seq_in_index": 1,
+          "Column_name": "id",
+          "Collation": "A",
+          "Cardinality": 258464,
+          "Sub_part": null,
+          "Packed": null,
+          "Null": "",
+          "Index_type": "BTREE",
+          "Comment": "",
+          "Index_comment": "",
+          "Visible": "YES",
+          "Expression": null,
+          "Clustered": "YES",
+          "Global": "NO"
+        }
+      ],
+      "ok": true,
+      "wall_ms": 16.667042393237352
+    },
+    {
+      "name": "memory_before",
+      "sql": "SELECT MEMORY_CURRENT,MEMORY_LIMIT FROM INFORMATION_SCHEMA.MEMORY_USAGE LIMIT 1",
+      "at": "2026-10-02T09:19:08.150289+08:00",
+      "rows": [
+        {
+          "MEMORY_CURRENT": 74997760,
+          "MEMORY_LIMIT": 1717986918
+        }
+      ],
+      "ok": true,
+      "wall_ms": 17.450917046517134
+    },
+    {
+      "name": "locks_before",
+      "sql": "SELECT COUNT(*) n FROM INFORMATION_SCHEMA.DATA_LOCK_WAITS",
+      "at": "2026-10-02T09:19:08.168720+08:00",
+      "rows": [
+        {
+          "n": 0
+        }
+      ],
+      "ok": true,
+      "wall_ms": 23.416375275701284
+    },
+    {
+      "name": "add_column",
+      "sql": "ALTER TABLE squad_lab.orders_big ADD COLUMN note_suffix4 VARCHAR(4) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin GENERATED ALWAYS AS (RIGHT(note,4)) VIRTUAL",
+      "at": "2026-10-02T09:19:08.192998+08:00",
+      "rows": [],
+      "ok": true,
+      "wall_ms": 280.10141709819436
+    },
+    {
+      "name": "add_column_warnings",
+      "sql": "SHOW WARNINGS",
+      "at": "2026-10-02T09:19:08.473920+08:00",
+      "rows": [],
+      "ok": true,
+      "wall_ms": 15.939582604914904
+    },
+    {
+      "name": "create_index",
+      "sql": "CREATE INDEX idx_orders_status_suffix4_amount ON squad_lab.orders_big(status,note_suffix4,amount)",
+      "at": "2026-10-02T09:19:08.490566+08:00",
+      "rows": [],
+      "ok": true,
+      "wall_ms": 21778.592499904335
+    },
+    {
+      "name": "create_index_warnings",
+      "sql": "SHOW WARNINGS",
+      "at": "2026-10-02T09:19:30.270041+08:00",
+      "rows": [],
+      "ok": true,
+      "wall_ms": 16.232124995440245
+    },
+    {
+      "name": "structure_after",
+      "sql": "SHOW CREATE TABLE squad_lab.orders_big",
+      "at": "2026-10-02T09:19:30.287185+08:00",
+      "rows": [
+        {
+          "Table": "orders_big",
+          "Create Table": "CREATE TABLE `orders_big` (\n  `id` bigint NOT NULL /*T![auto_rand] AUTO_RANDOM(5) */,\n  `user_id` bigint DEFAULT NULL,\n  `amount` decimal(10,2) DEFAULT NULL,\n  `status` varchar(16) DEFAULT NULL,\n  `note` varchar(256) DEFAULT NULL,\n  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,\n  `note_suffix4` varchar(4) GENERATED ALWAYS AS (right(`note`, 4)) VIRTUAL,\n  PRIMARY KEY (`id`) /*T![clustered_index] CLUSTERED */,\n  KEY `idx_orders_status_suffix4_amount` (`status`,`note_suffix4`,`amount`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin /*T![auto_rand_base] AUTO_RANDOM_BASE=991407 */"
+        }
+      ],
+      "ok": true,
+      "wall_ms": 21.226208191365004
+    },
+    {
+      "name": "indexes_after",
+      "sql": "SHOW INDEX FROM squad_lab.orders_big",
+      "at": "2026-10-02T09:19:30.309294+08:00",
+      "rows": [
+        {
+          "Table": "orders_big",
+          "Non_unique": 0,
+          "Key_name": "PRIMARY",
+          "Seq_in_index": 1,
+          "Column_name": "id",
+          "Collation": "A",
+          "Cardinality": 258464,
+          "Sub_part": null,
+          "Packed": null,
+          "Null": "",
+          "Index_type": "BTREE",
+          "Comment": "",
+          "Index_comment": "",
+          "Visible": "YES",
+          "Expression": null,
+          "Clustered": "YES",
+          "Global": "NO"
+        },
+        {
+          "Table": "orders_big",
+          "Non_unique": 1,
+          "Key_name": "idx_orders_status_suffix4_amount",
+          "Seq_in_index": 1,
+          "Column_name": "status",
+          "Collation": "A",
+          "Cardinality": 0,
+          "Sub_part": null,
+          "Packed": null,
+          "Null": "YES",
+          "Index_type": "BTREE",
+          "Comment": "",
+          "Index_comment": "",
+          "Visible": "YES",
+          "Expression": null,
+          "Clustered": "NO",
+          "Global": "NO"
+        },
+        {
+          "Table": "orders_big",
+          "Non_unique": 1,
+          "Key_name": "idx_orders_status_suffix4_amount",
+          "Seq_in_index": 2,
+          "Column_name": "note_suffix4",
+          "Collation": "A",
+          "Cardinality": 0,
+          "Sub_part": null,
+          "Packed": null,
+          "Null": "YES",
+          "Index_type": "BTREE",
+          "Comment": "",
+          "Index_comment": "",
+          "Visible": "YES",
+          "Expression": null,
+          "Clustered": "NO",
+          "Global": "NO"
+        },
+        {
+          "Table": "orders_big",
+          "Non_unique": 1,
+          "Key_name": "idx_orders_status_suffix4_amount",
+          "Seq_in_index": 3,
+          "Column_name": "amount",
+          "Collation": "A",
+          "Cardinality": 0,
+          "Sub_part": null,
+          "Packed": null,
+          "Null": "YES",
+          "Index_type": "BTREE",
+          "Comment": "",
+          "Index_comment": "",
+          "Visible": "YES",
+          "Expression": null,
+          "Clustered": "NO",
+          "Global": "NO"
+        }
+      ],
+      "ok": true,
+      "wall_ms": 16.686625313013792
+    },
+    {
+      "name": "ddl_state",
+      "sql": "SELECT JOB_ID,JOB_TYPE,STATE,CREATE_TIME,START_TIME,END_TIME FROM INFORMATION_SCHEMA.DDL_JOBS WHERE DB_NAME='squad_lab' AND TABLE_NAME='orders_big' ORDER BY JOB_ID DESC LIMIT 5",
+      "at": "2026-10-02T09:19:30.327700+08:00",
+      "rows": [
+        {
+          "JOB_ID": 132,
+          "JOB_TYPE": "add index",
+          "STATE": "synced",
+          "CREATE_TIME": "2026-10-02 09:19:08.573000",
+          "START_TIME": "2026-10-02 09:19:08.573000",
+          "END_TIME": "2026-10-02 09:19:30.273000"
+        },
+        {
+          "JOB_ID": 131,
+          "JOB_TYPE": "add column",
+          "STATE": "synced",
+          "CREATE_TIME": "2026-10-02 09:19:08.273000",
+          "START_TIME": "2026-10-02 09:19:08.273000",
+          "END_TIME": "2026-10-02 09:19:08.523000"
+        },
+        {
+          "JOB_ID": 130,
+          "JOB_TYPE": "create table",
+          "STATE": "synced",
+          "CREATE_TIME": "2026-09-30 15:00:47.023000",
+          "START_TIME": "2026-09-30 15:00:47.023000",
+          "END_TIME": "2026-09-30 15:00:47.073000"
+        },
+        {
+          "JOB_ID": 128,
+          "JOB_TYPE": "drop table",
+          "STATE": "synced",
+          "CREATE_TIME": "2026-09-30 15:00:46.723000",
+          "START_TIME": "2026-09-30 15:00:46.723000",
+          "END_TIME": "2026-09-30 15:00:46.923000"
+        },
+        {
+          "JOB_ID": 127,
+          "JOB_TYPE": "add index",
+          "STATE": "synced",
+          "CREATE_TIME": "2026-09-30 14:35:50.423000",
+          "START_TIME": "2026-09-30 14:35:50.423000",
+          "END_TIME": "2026-09-30 14:36:17.774000"
+        }
+      ],
+      "ok": true,
+      "wall_ms": 55.308458395302296
+    },
+    {
+      "name": "analyze",
+      "sql": "ANALYZE TABLE squad_lab.orders_big COLUMNS status,note,note_suffix4,amount",
+      "at": "2026-10-02T09:19:30.383891+08:00",
+      "rows": [],
+      "ok": true,
+      "wall_ms": 1922.1140001900494
+    },
+    {
+      "name": "analyze_warnings",
+      "sql": "SHOW WARNINGS",
+      "at": "2026-10-02T09:19:32.307104+08:00",
+      "rows": [
+        {
+          "Level": "Warning",
+          "Code": 1105,
+          "Message": "Columns id are missing in ANALYZE but their stats are needed for calculating stats for indexes/primary key/extended stats"
+        },
+        {
+          "Level": "Note",
+          "Code": 1105,
+          "Message": "Analyze use auto adjusted sample rate 0.419617 for table squad_lab.orders_big, reason to use this rate is \"use min(1, 110000/262144) as the sample-rate=0.41961669921875\""
+        }
+      ],
+      "ok": true,
+      "wall_ms": 15.905499923974276
+    },
+    {
+      "name": "stats_meta_after",
+      "sql": "SHOW STATS_META WHERE Db_name='squad_lab' AND Table_name='orders_big'",
+      "at": "2026-10-02T09:19:32.323908+08:00",
+      "rows": [
+        {
+          "Db_name": "squad_lab",
+          "Table_name": "orders_big",
+          "Partition_name": "",
+          "Update_time": "2026-10-02 01:19:32",
+          "Modify_count": 0,
+          "Row_count": 262144,
+          "Last_analyze_time": "2026-10-02 01:19:32"
+        }
+      ],
+      "ok": true,
+      "wall_ms": 54.92816725745797
+    },
+    {
+      "name": "stats_histograms_after",
+      "sql": "SHOW STATS_HISTOGRAMS WHERE Db_name='squad_lab' AND Table_name='orders_big'",
+      "at": "2026-10-02T09:19:32.380382+08:00",
+      "rows": [
+        {
+          "Db_name": "squad_lab",
+          "Table_name": "orders_big",
+          "Partition_name": "",
+          "Column_name": "status",
+          "Is_index": 0,
+          "Update_time": "2026-10-02 01:19:32",
+          "Distinct_count": 2,
+          "Null_count": 0,
+          "Avg_col_size": 4.5,
+          "Correlation": 0.5009655571445433,
+          "Load_status": "allEvicted",
+          "Total_mem_usage": 0,
+          "Hist_mem_usage": 0,
+          "Topn_mem_usage": 0,
+          "Cms_mem_usage": 0
+        },
+        {
+          "Db_name": "squad_lab",
+          "Table_name": "orders_big",
+          "Partition_name": "",
+          "Column_name": "id",
+          "Is_index": 0,
+          "Update_time": "2026-10-02 01:19:32",
+          "Distinct_count": 258464,
+          "Null_count": 0,
+          "Avg_col_size": 8.0,
+          "Correlation": 1.0,
+          "Load_status": "allLoaded",
+          "Total_mem_usage": 10536,
+          "Hist_mem_usage": 10536,
+          "Topn_mem_usage": 0,
+          "Cms_mem_usage": 0
+        },
+        {
+          "Db_name": "squad_lab",
+          "Table_name": "orders_big",
+          "Partition_name": "",
+          "Column_name": "note",
+          "Is_index": 0,
+          "Update_time": "2026-10-02 01:19:32",
+          "Distinct_count": 1000,
+          "Null_count": 0,
+          "Avg_col_size": 20.0,
+          "Correlation": -0.0004278248269122804,
+          "Load_status": "allEvicted",
+          "Total_mem_usage": 0,
+          "Hist_mem_usage": 0,
+          "Topn_mem_usage": 0,
+          "Cms_mem_usage": 0
+        }
+      ],
+      "ok": true,
+      "wall_ms": 50.826708786189556
+    },
+    {
+      "name": "memory_after",
+      "sql": "SELECT MEMORY_CURRENT,MEMORY_LIMIT FROM INFORMATION_SCHEMA.MEMORY_USAGE LIMIT 1",
+      "at": "2026-10-02T09:19:32.432835+08:00",
+      "rows": [
+        {
+          "MEMORY_CURRENT": 236937216,
+          "MEMORY_LIMIT": 1717986918
+        }
+      ],
+      "ok": true,
+      "wall_ms": 30.013459268957376
+    }
+  ],
+  "completed": true,
+  "ended_at": "2026-10-02T09:19:32.464742+08:00"
+}

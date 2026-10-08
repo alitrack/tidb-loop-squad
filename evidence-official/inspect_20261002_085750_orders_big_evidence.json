@@ -1,0 +1,637 @@
+{
+  "started_at": "2026-10-02T08:57:50.205462+08:00",
+  "task": "#t3",
+  "checks": [
+    {
+      "name": "clock",
+      "source": "session functions",
+      "sql": "SELECT NOW(6) AS db_now, UTC_TIMESTAMP(6) AS db_utc, @@session.time_zone AS session_time_zone, @@system_time_zone AS system_time_zone",
+      "started_at": "2026-10-02T08:57:50.358590+08:00",
+      "ok": true,
+      "rows": [
+        {
+          "db_now": "2026-10-02 08:57:50.454186",
+          "db_utc": "2026-10-02 00:57:50.454186",
+          "session_time_zone": "+08:00",
+          "system_time_zone": "UTC"
+        }
+      ]
+    },
+    {
+      "name": "orders_big_top10",
+      "source": "INFORMATION_SCHEMA.STATEMENTS_SUMMARY_HISTORY",
+      "sql": "SELECT SUMMARY_BEGIN_TIME, SUMMARY_END_TIME, SCHEMA_NAME, DIGEST, DIGEST_TEXT,\nEXEC_COUNT, SUM_LATENCY, AVG_LATENCY, MAX_LATENCY,\nROUND(SUM_LATENCY/1e6,3) AS total_ms, ROUND(AVG_LATENCY/1e6,3) AS avg_ms,\nROUND(MAX_LATENCY/1e6,3) AS max_ms, AVG_PROCESSED_KEYS, MAX_PROCESSED_KEYS,\nAVG_TOTAL_KEYS, MAX_TOTAL_KEYS, AVG_RESULT_ROWS, SUM_ERRORS, SUM_WARNINGS\nFROM INFORMATION_SCHEMA.STATEMENTS_SUMMARY_HISTORY\nWHERE SUMMARY_END_TIME >= NOW() - INTERVAL 30 MINUTE\nAND DIGEST_TEXT LIKE '%`orders_big`%'\nAND (SCHEMA_NAME='squad_lab' OR DIGEST_TEXT LIKE '%`squad_lab` . `orders_big`%')\nORDER BY SUM_LATENCY DESC LIMIT 10",
+      "started_at": "2026-10-02T08:57:50.374347+08:00",
+      "ok": true,
+      "rows": [
+        {
+          "SUMMARY_BEGIN_TIME": "2026-10-02 08:55:41",
+          "SUMMARY_END_TIME": "2026-10-02 08:56:42",
+          "SCHEMA_NAME": "squad_lab",
+          "DIGEST": "8c720334eba435f01617c9475a9118fd3af0c7ed1ef96c27b7757e0ea5b9cba8",
+          "DIGEST_TEXT": "select count ( ? ) , sum ( `amount` ) from `squad_lab` . `orders_big` where `note` like ? and status = ?",
+          "EXEC_COUNT": 500,
+          "SUM_LATENCY": 91768736306,
+          "AVG_LATENCY": 183537472,
+          "MAX_LATENCY": 203238932,
+          "total_ms": 91768.736,
+          "avg_ms": 183.537,
+          "max_ms": 203.239,
+          "AVG_PROCESSED_KEYS": 262144,
+          "MAX_PROCESSED_KEYS": 262144,
+          "AVG_TOTAL_KEYS": 262146,
+          "MAX_TOTAL_KEYS": 262146,
+          "AVG_RESULT_ROWS": 1,
+          "SUM_ERRORS": 0,
+          "SUM_WARNINGS": 0
+        },
+        {
+          "SUMMARY_BEGIN_TIME": "2026-10-02 08:54:40",
+          "SUMMARY_END_TIME": "2026-10-02 08:55:41",
+          "SCHEMA_NAME": "squad_lab",
+          "DIGEST": "8c720334eba435f01617c9475a9118fd3af0c7ed1ef96c27b7757e0ea5b9cba8",
+          "DIGEST_TEXT": "select count ( ? ) , sum ( `amount` ) from `squad_lab` . `orders_big` where `note` like ? and status = ?",
+          "EXEC_COUNT": 283,
+          "SUM_LATENCY": 51809569289,
+          "AVG_LATENCY": 183072683,
+          "MAX_LATENCY": 201298072,
+          "total_ms": 51809.569,
+          "avg_ms": 183.073,
+          "max_ms": 201.298,
+          "AVG_PROCESSED_KEYS": 262144,
+          "MAX_PROCESSED_KEYS": 262144,
+          "AVG_TOTAL_KEYS": 262146,
+          "MAX_TOTAL_KEYS": 262146,
+          "AVG_RESULT_ROWS": 1,
+          "SUM_ERRORS": 0,
+          "SUM_WARNINGS": 0
+        },
+        {
+          "SUMMARY_BEGIN_TIME": "2026-10-02 08:56:42",
+          "SUMMARY_END_TIME": "2026-10-02 08:57:43",
+          "SCHEMA_NAME": "squad_lab",
+          "DIGEST": "8c720334eba435f01617c9475a9118fd3af0c7ed1ef96c27b7757e0ea5b9cba8",
+          "DIGEST_TEXT": "select count ( ? ) , sum ( `amount` ) from `squad_lab` . `orders_big` where `note` like ? and status = ?",
+          "EXEC_COUNT": 202,
+          "SUM_LATENCY": 37100217344,
+          "AVG_LATENCY": 183664442,
+          "MAX_LATENCY": 199175863,
+          "total_ms": 37100.217,
+          "avg_ms": 183.664,
+          "max_ms": 199.176,
+          "AVG_PROCESSED_KEYS": 262144,
+          "MAX_PROCESSED_KEYS": 262144,
+          "AVG_TOTAL_KEYS": 262146,
+          "MAX_TOTAL_KEYS": 262146,
+          "AVG_RESULT_ROWS": 1,
+          "SUM_ERRORS": 0,
+          "SUM_WARNINGS": 0
+        },
+        {
+          "SUMMARY_BEGIN_TIME": "2026-10-02 08:51:38",
+          "SUMMARY_END_TIME": "2026-10-02 08:52:38",
+          "SCHEMA_NAME": "squad_lab",
+          "DIGEST": "d7e5f57d004e413b818f5399f858670a82e090b74ad9eea0c86611fb4539444c",
+          "DIGEST_TEXT": "select count ( ? ) from `orders_big`",
+          "EXEC_COUNT": 1,
+          "SUM_LATENCY": 99737436,
+          "AVG_LATENCY": 99737436,
+          "MAX_LATENCY": 99737436,
+          "total_ms": 99.737,
+          "avg_ms": 99.737,
+          "max_ms": 99.737,
+          "AVG_PROCESSED_KEYS": 262144,
+          "MAX_PROCESSED_KEYS": 262144,
+          "AVG_TOTAL_KEYS": 262146,
+          "MAX_TOTAL_KEYS": 262146,
+          "AVG_RESULT_ROWS": 1,
+          "SUM_ERRORS": 0,
+          "SUM_WARNINGS": 0
+        },
+        {
+          "SUMMARY_BEGIN_TIME": "2026-10-02 08:51:38",
+          "SUMMARY_END_TIME": "2026-10-02 08:52:38",
+          "SCHEMA_NAME": "squad_lab",
+          "DIGEST": "7e0119e7f271b2488d61be92b47b7251af828e6eafd2510ee6551b353275ebfd",
+          "DIGEST_TEXT": "show index from `orders_big`",
+          "EXEC_COUNT": 1,
+          "SUM_LATENCY": 3194068,
+          "AVG_LATENCY": 3194068,
+          "MAX_LATENCY": 3194068,
+          "total_ms": 3.194,
+          "avg_ms": 3.194,
+          "max_ms": 3.194,
+          "AVG_PROCESSED_KEYS": 0,
+          "MAX_PROCESSED_KEYS": 0,
+          "AVG_TOTAL_KEYS": 0,
+          "MAX_TOTAL_KEYS": 0,
+          "AVG_RESULT_ROWS": 1,
+          "SUM_ERRORS": 0,
+          "SUM_WARNINGS": 0
+        }
+      ]
+    },
+    {
+      "name": "long_transactions",
+      "source": "INFORMATION_SCHEMA.CLUSTER_TIDB_TRX",
+      "sql": "SELECT INSTANCE, ID, START_TIME, STATE, CURRENT_SQL_DIGEST,\nTIMESTAMPDIFF(SECOND,START_TIME,NOW()) AS age_seconds\nFROM INFORMATION_SCHEMA.CLUSTER_TIDB_TRX\nWHERE START_TIME < NOW() - INTERVAL 5 SECOND\nORDER BY START_TIME LIMIT 100",
+      "started_at": "2026-10-02T08:57:50.392619+08:00",
+      "ok": true,
+      "rows": [
+        {
+          "INSTANCE": "caa36771-c37d-45fa-8457-07100f69e448",
+          "ID": 469474389648736557,
+          "START_TIME": "2026-10-02 00:57:50.474000",
+          "STATE": "Idle",
+          "CURRENT_SQL_DIGEST": null,
+          "age_seconds": 28799
+        }
+      ]
+    },
+    {
+      "name": "orders_big_window_coverage",
+      "source": "INFORMATION_SCHEMA.STATEMENTS_SUMMARY_HISTORY",
+      "sql": "SELECT NOW(6) AS collected_at, NOW() - INTERVAL 30 MINUTE AS cutoff,\nMIN(SUMMARY_BEGIN_TIME) AS first_window_begin, MAX(SUMMARY_END_TIME) AS last_window_end,\nCOUNT(*) AS window_digest_rows, COUNT(DISTINCT DIGEST) AS distinct_digests\nFROM INFORMATION_SCHEMA.STATEMENTS_SUMMARY_HISTORY\nWHERE SUMMARY_END_TIME >= NOW() - INTERVAL 30 MINUTE\nAND DIGEST_TEXT LIKE '%`orders_big`%'\nAND (SCHEMA_NAME='squad_lab' OR DIGEST_TEXT LIKE '%`squad_lab` . `orders_big`%')",
+      "started_at": "2026-10-02T08:59:23.582662+08:00",
+      "ok": true,
+      "rows": [
+        {
+          "collected_at": "2026-10-02 08:59:23.679223",
+          "cutoff": "2026-10-02 08:29:23",
+          "first_window_begin": "2026-10-02 08:51:38",
+          "last_window_end": "2026-10-02 08:58:43",
+          "window_digest_rows": 7,
+          "distinct_digests": 5
+        }
+      ]
+    },
+    {
+      "name": "transaction_clock_check",
+      "source": "INFORMATION_SCHEMA.CLUSTER_TIDB_TRX",
+      "sql": "SELECT NOW(6) AS db_now, UTC_TIMESTAMP(6) AS db_utc,\n@@session.time_zone AS session_time_zone, INSTANCE, ID, START_TIME, STATE, CURRENT_SQL_DIGEST,\nTIMESTAMPDIFF(SECOND, START_TIME, NOW()) AS difference_to_session_now_s,\nTIMESTAMPDIFF(SECOND, START_TIME, UTC_TIMESTAMP()) AS difference_to_utc_now_s\nFROM INFORMATION_SCHEMA.CLUSTER_TIDB_TRX ORDER BY START_TIME LIMIT 100",
+      "started_at": "2026-10-02T08:59:23.602182+08:00",
+      "ok": true,
+      "rows": [
+        {
+          "db_now": "2026-10-02 08:59:23.697344",
+          "db_utc": "2026-10-02 00:59:23.697345",
+          "session_time_zone": "+08:00",
+          "INSTANCE": "caa36771-c37d-45fa-8457-07100f69e448",
+          "ID": 469474414080557358,
+          "START_TIME": "2026-10-02 00:59:23.674000",
+          "STATE": "Idle",
+          "CURRENT_SQL_DIGEST": null,
+          "difference_to_session_now_s": 28799,
+          "difference_to_utc_now_s": 0
+        }
+      ]
+    },
+    {
+      "name": "target_sample_and_plan",
+      "source": "INFORMATION_SCHEMA.STATEMENTS_SUMMARY_HISTORY",
+      "sql": "SELECT SUMMARY_BEGIN_TIME, SUMMARY_END_TIME, DIGEST, PLAN_DIGEST, QUERY_SAMPLE_TEXT\nFROM INFORMATION_SCHEMA.STATEMENTS_SUMMARY_HISTORY\nWHERE DIGEST = '8c720334eba435f01617c9475a9118fd3af0c7ed1ef96c27b7757e0ea5b9cba8'\nAND SUMMARY_END_TIME >= NOW() - INTERVAL 30 MINUTE\nORDER BY SUMMARY_BEGIN_TIME DESC LIMIT 10",
+      "started_at": "2026-10-02T08:59:44.521591+08:00",
+      "ok": true,
+      "rows": [
+        {
+          "SUMMARY_BEGIN_TIME": "2026-10-02 08:56:42",
+          "SUMMARY_END_TIME": "2026-10-02 08:57:43",
+          "DIGEST": "8c720334eba435f01617c9475a9118fd3af0c7ed1ef96c27b7757e0ea5b9cba8",
+          "PLAN_DIGEST": "f647fd78aa620ee4d77394eacd7227b6c41fd47a5cd433720d083f29c2939dae",
+          "QUERY_SAMPLE_TEXT": "SELECT COUNT(*), SUM(amount) FROM squad_lab.orders_big\n    WHERE note LIKE '%-042' AND status='new'"
+        },
+        {
+          "SUMMARY_BEGIN_TIME": "2026-10-02 08:55:41",
+          "SUMMARY_END_TIME": "2026-10-02 08:56:42",
+          "DIGEST": "8c720334eba435f01617c9475a9118fd3af0c7ed1ef96c27b7757e0ea5b9cba8",
+          "PLAN_DIGEST": "f647fd78aa620ee4d77394eacd7227b6c41fd47a5cd433720d083f29c2939dae",
+          "QUERY_SAMPLE_TEXT": "SELECT COUNT(*), SUM(amount) FROM squad_lab.orders_big\n    WHERE note LIKE '%-042' AND status='new'"
+        },
+        {
+          "SUMMARY_BEGIN_TIME": "2026-10-02 08:54:40",
+          "SUMMARY_END_TIME": "2026-10-02 08:55:41",
+          "DIGEST": "8c720334eba435f01617c9475a9118fd3af0c7ed1ef96c27b7757e0ea5b9cba8",
+          "PLAN_DIGEST": "f647fd78aa620ee4d77394eacd7227b6c41fd47a5cd433720d083f29c2939dae",
+          "QUERY_SAMPLE_TEXT": "SELECT COUNT(*), SUM(amount) FROM squad_lab.orders_big\n    WHERE note LIKE '%-042' AND status='new'"
+        }
+      ]
+    }
+  ],
+  "completed_at": "2026-10-02T08:59:44.656208+08:00",
+  "full_inspection": {
+    "top_sql": {
+      "ok": true,
+      "source": "statements_summary_history",
+      "rows": [
+        {
+          "sql_text": "select count ( ? ) , sum ( `amount` ) from `squad_lab` . `orders_big` where `not",
+          "exec_count": 500,
+          "errors": 0,
+          "warnings": 0,
+          "avg_ms": 183.5,
+          "max_ms": 203.2,
+          "total_ms": 91768.7,
+          "avg_rows": 1
+        },
+        {
+          "sql_text": "select count ( ? ) , sum ( `amount` ) from `squad_lab` . `orders_big` where `not",
+          "exec_count": 283,
+          "errors": 0,
+          "warnings": 0,
+          "avg_ms": 183.1,
+          "max_ms": 201.3,
+          "total_ms": 51809.6,
+          "avg_rows": 1
+        },
+        {
+          "sql_text": "select count ( ? ) , sum ( `amount` ) from `squad_lab` . `orders_big` where `not",
+          "exec_count": 202,
+          "errors": 0,
+          "warnings": 0,
+          "avg_ms": 183.7,
+          "max_ms": 199.2,
+          "total_ms": 37100.2,
+          "avg_rows": 1
+        },
+        {
+          "sql_text": "select count ( ? ) from `squad_lab` . `orders_big` where `note` like ?",
+          "exec_count": 1,
+          "errors": 0,
+          "warnings": 0,
+          "avg_ms": 175.4,
+          "max_ms": 175.4,
+          "total_ms": 175.4,
+          "avg_rows": 1
+        },
+        {
+          "sql_text": "use `squad_lab`",
+          "exec_count": 501,
+          "errors": 0,
+          "warnings": 0,
+          "avg_ms": 0.3,
+          "max_ms": 0.5,
+          "total_ms": 150.1,
+          "avg_rows": 0
+        },
+        {
+          "sql_text": "select count ( ? ) from `squad_lab` . `orders_big`",
+          "exec_count": 1,
+          "errors": 0,
+          "warnings": 0,
+          "avg_ms": 107.3,
+          "max_ms": 107.3,
+          "total_ms": 107.3,
+          "avg_rows": 1
+        },
+        {
+          "sql_text": "select count ( ? ) from `orders_big`",
+          "exec_count": 1,
+          "errors": 0,
+          "warnings": 0,
+          "avg_ms": 99.7,
+          "max_ms": 99.7,
+          "total_ms": 99.7,
+          "avg_rows": 1
+        },
+        {
+          "sql_text": "use `squad_lab`",
+          "exec_count": 284,
+          "errors": 0,
+          "warnings": 0,
+          "avg_ms": 0.3,
+          "max_ms": 0.5,
+          "total_ms": 86.0,
+          "avg_rows": 0
+        },
+        {
+          "sql_text": "use `squad_lab`",
+          "exec_count": 200,
+          "errors": 0,
+          "warnings": 0,
+          "avg_ms": 0.3,
+          "max_ms": 0.6,
+          "total_ms": 59.7,
+          "avg_rows": 0
+        },
+        {
+          "sql_text": "set names `utf8mb4`",
+          "exec_count": 501,
+          "errors": 0,
+          "warnings": 0,
+          "avg_ms": 0.1,
+          "max_ms": 0.1,
+          "total_ms": 39.0,
+          "avg_rows": 0
+        }
+      ]
+    },
+    "biz_sql": {
+      "ok": true,
+      "source": "statements_summary_history",
+      "rows": [
+        {
+          "sql_text": "select count ( ? ) , sum ( `amount` ) from `squad_lab` . `orders_big` where `not",
+          "schema_name": "squad_lab",
+          "exec_count": 500,
+          "errors": 0,
+          "avg_ms": 183.5,
+          "max_ms": 203.2,
+          "total_ms": 91768.7
+        },
+        {
+          "sql_text": "select count ( ? ) , sum ( `amount` ) from `squad_lab` . `orders_big` where `not",
+          "schema_name": "squad_lab",
+          "exec_count": 283,
+          "errors": 0,
+          "avg_ms": 183.1,
+          "max_ms": 201.3,
+          "total_ms": 51809.6
+        },
+        {
+          "sql_text": "select count ( ? ) , sum ( `amount` ) from `squad_lab` . `orders_big` where `not",
+          "schema_name": "squad_lab",
+          "exec_count": 202,
+          "errors": 0,
+          "avg_ms": 183.7,
+          "max_ms": 199.2,
+          "total_ms": 37100.2
+        },
+        {
+          "sql_text": "select count ( ? ) from `squad_lab` . `orders_big` where `note` like ?",
+          "schema_name": "sys",
+          "exec_count": 1,
+          "errors": 0,
+          "avg_ms": 175.4,
+          "max_ms": 175.4,
+          "total_ms": 175.4
+        },
+        {
+          "sql_text": "use `squad_lab`",
+          "schema_name": "squad_lab",
+          "exec_count": 501,
+          "errors": 0,
+          "avg_ms": 0.3,
+          "max_ms": 0.5,
+          "total_ms": 150.1
+        },
+        {
+          "sql_text": "select count ( ? ) from `squad_lab` . `orders_big`",
+          "schema_name": "sys",
+          "exec_count": 1,
+          "errors": 0,
+          "avg_ms": 107.3,
+          "max_ms": 107.3,
+          "total_ms": 107.3
+        },
+        {
+          "sql_text": "select count ( ? ) from `orders_big`",
+          "schema_name": "squad_lab",
+          "exec_count": 1,
+          "errors": 0,
+          "avg_ms": 99.7,
+          "max_ms": 99.7,
+          "total_ms": 99.7
+        },
+        {
+          "sql_text": "use `squad_lab`",
+          "schema_name": "squad_lab",
+          "exec_count": 284,
+          "errors": 0,
+          "avg_ms": 0.3,
+          "max_ms": 0.5,
+          "total_ms": 86.0
+        },
+        {
+          "sql_text": "use `squad_lab`",
+          "schema_name": "squad_lab",
+          "exec_count": 200,
+          "errors": 0,
+          "avg_ms": 0.3,
+          "max_ms": 0.6,
+          "total_ms": 59.7
+        },
+        {
+          "sql_text": "set names `utf8mb4`",
+          "schema_name": "squad_lab",
+          "exec_count": 501,
+          "errors": 0,
+          "avg_ms": 0.1,
+          "max_ms": 0.1,
+          "total_ms": 39.0
+        }
+      ]
+    },
+    "error_sql": {
+      "ok": true,
+      "source": "statements_summary_history",
+      "rows": []
+    },
+    "error_summary": {
+      "ok": true,
+      "source": "statements_summary_history",
+      "rows": [
+        {
+          "exec_count": "3957",
+          "errors": "0",
+          "warnings": "0",
+          "window_begin": "2026-10-02 07:16:42",
+          "window_end": "2026-10-02 08:57:15"
+        }
+      ]
+    },
+    "lock_waits": {
+      "ok": true,
+      "source": "data_lock_waits",
+      "rows": [
+        {
+          "waiting_txns": 0
+        }
+      ]
+    },
+    "deadlocks": {
+      "ok": true,
+      "source": "deadlocks",
+      "rows": [
+        {
+          "deadlock_cnt": 0
+        }
+      ]
+    },
+    "long_txns": {
+      "ok": true,
+      "source": "cluster_processlist",
+      "rows": []
+    },
+    "ddl_jobs_recent": {
+      "ok": true,
+      "source": "ddl_jobs",
+      "rows": [
+        {
+          "job_id": 130,
+          "job_type": "create table",
+          "db": "squad_lab",
+          "tbl": "orders_big",
+          "state": "synced",
+          "created": "2026-09-30 15:00:47.023000"
+        },
+        {
+          "job_id": 128,
+          "job_type": "drop table",
+          "db": "squad_lab",
+          "tbl": "orders_big",
+          "state": "synced",
+          "created": "2026-09-30 15:00:46.723000"
+        },
+        {
+          "job_id": 127,
+          "job_type": "add index",
+          "db": "squad_lab",
+          "tbl": "orders_big",
+          "state": "synced",
+          "created": "2026-09-30 14:35:50.423000"
+        },
+        {
+          "job_id": 126,
+          "job_type": "add column",
+          "db": "squad_lab",
+          "tbl": "orders_big",
+          "state": "synced",
+          "created": "2026-09-30 14:35:50.173000"
+        },
+        {
+          "job_id": 125,
+          "job_type": "create table",
+          "db": "squad_lab",
+          "tbl": "orders_big",
+          "state": "synced",
+          "created": "2026-09-30 13:57:22.223000"
+        },
+        {
+          "job_id": 123,
+          "job_type": "drop table",
+          "db": "squad_lab",
+          "tbl": "orders_big",
+          "state": "synced",
+          "created": "2026-09-30 13:57:21.773000"
+        },
+        {
+          "job_id": 122,
+          "job_type": "add index",
+          "db": "squad_lab",
+          "tbl": "orders_big",
+          "state": "synced",
+          "created": "2026-09-30 12:03:02.774000"
+        },
+        {
+          "job_id": 121,
+          "job_type": "create table",
+          "db": "squad_lab",
+          "tbl": "orders_big",
+          "state": "synced",
+          "created": "2026-09-30 11:38:38.273000"
+        },
+        {
+          "job_id": 119,
+          "job_type": "create schema",
+          "db": "squad_lab",
+          "tbl": "",
+          "state": "synced",
+          "created": "2026-09-30 11:38:38.073000"
+        },
+        {
+          "job_id": 113,
+          "job_type": "create table",
+          "db": "mysql",
+          "tbl": "auto_analyze_tasks_history",
+          "state": "synced",
+          "created": "2026-09-16 05:51:40.524000"
+        }
+      ]
+    },
+    "memory": {
+      "ok": true,
+      "source": "memory_usage",
+      "rows": [
+        {
+          "used_bytes": 75554816,
+          "limit_bytes": 1717986918,
+          "max_used_bytes": 106037248,
+          "used_pct": "4.4"
+        }
+      ]
+    },
+    "summary_tables": {
+      "ok": true,
+      "source": "tables(连通哨兵)",
+      "rows": [
+        {
+          "table_name": "VIEWS"
+        },
+        {
+          "table_name": "VARIABLES_INFO"
+        },
+        {
+          "table_name": "USER_PRIVILEGES"
+        }
+      ]
+    }
+  },
+  "full_inspection_collected_at": "2026-10-02T08:57:15+08:00",
+  "full_inspection_queries": [
+    {
+      "name": "top_sql",
+      "sql": "SELECT LEFT(digest_text,80) sql_text, exec_count,\n        SUM_ERRORS errors, SUM_WARNINGS warnings,\n        ROUND(avg_latency/1e6,1) avg_ms, ROUND(max_latency/1e6,1) max_ms,\n        ROUND(sum_latency/1e6,1) total_ms, AVG_RESULT_ROWS avg_rows\n        FROM information_schema.statements_summary_history\n        ORDER BY sum_latency DESC LIMIT 10",
+      "source": "INFORMATION_SCHEMA.STATEMENTS_SUMMARY_HISTORY"
+    },
+    {
+      "name": "biz_sql",
+      "sql": "SELECT LEFT(digest_text,80) sql_text, schema_name,\n        exec_count, SUM_ERRORS errors, ROUND(avg_latency/1e6,1) avg_ms,\n        ROUND(max_latency/1e6,1) max_ms, ROUND(sum_latency/1e6,1) total_ms\n        FROM information_schema.statements_summary_history\n        WHERE digest_text NOT LIKE '%information_schema%'\n        ORDER BY sum_latency DESC LIMIT 10",
+      "source": "INFORMATION_SCHEMA.STATEMENTS_SUMMARY_HISTORY"
+    },
+    {
+      "name": "error_sql",
+      "sql": "SELECT LEFT(digest_text,80) sql_text, schema_name,\n        exec_count, SUM_ERRORS errors, SUM_WARNINGS warnings\n        FROM information_schema.statements_summary_history\n        WHERE SUM_ERRORS > 0 ORDER BY SUM_ERRORS DESC LIMIT 10",
+      "source": "INFORMATION_SCHEMA.STATEMENTS_SUMMARY_HISTORY"
+    },
+    {
+      "name": "error_summary",
+      "sql": "SELECT SUM(EXEC_COUNT) exec_count,\n        SUM(SUM_ERRORS) errors, SUM(SUM_WARNINGS) warnings,\n        MIN(SUMMARY_BEGIN_TIME) window_begin, MAX(SUMMARY_END_TIME) window_end\n        FROM information_schema.statements_summary_history",
+      "source": "INFORMATION_SCHEMA.STATEMENTS_SUMMARY_HISTORY"
+    },
+    {
+      "name": "lock_waits",
+      "sql": "SELECT COUNT(*) waiting_txns FROM information_schema.data_lock_waits",
+      "source": "INFORMATION_SCHEMA.DATA_LOCK_WAITS"
+    },
+    {
+      "name": "deadlocks",
+      "sql": "SELECT COUNT(*) deadlock_cnt FROM information_schema.deadlocks",
+      "source": "INFORMATION_SCHEMA.DEADLOCKS"
+    },
+    {
+      "name": "long_txns",
+      "sql": "SELECT id, user, db, time AS sec, LEFT(info,60) current_sql\n        FROM information_schema.cluster_processlist WHERE command!='Sleep' AND time > 5\n        ORDER BY time DESC LIMIT 10",
+      "source": "INFORMATION_SCHEMA.CLUSTER_PROCESSLIST"
+    },
+    {
+      "name": "ddl_jobs_recent",
+      "sql": "SELECT JOB_ID job_id, JOB_TYPE job_type, DB_NAME db,\n        TABLE_NAME tbl, STATE state, CREATE_TIME created\n        FROM information_schema.ddl_jobs ORDER BY JOB_ID DESC LIMIT 10",
+      "source": "INFORMATION_SCHEMA.DDL_JOBS"
+    },
+    {
+      "name": "memory",
+      "sql": "SELECT MEMORY_CURRENT used_bytes, MEMORY_LIMIT limit_bytes,\n        MEMORY_MAX_USED max_used_bytes,\n        ROUND(MEMORY_CURRENT*100/(MEMORY_LIMIT+1),1) used_pct\n        FROM information_schema.memory_usage LIMIT 1",
+      "source": "INFORMATION_SCHEMA.MEMORY_USAGE"
+    },
+    {
+      "name": "summary_tables",
+      "sql": "SELECT table_name FROM information_schema.tables\n        WHERE table_schema='information_schema' LIMIT 3",
+      "source": "INFORMATION_SCHEMA.TABLES"
+    }
+  ],
+  "scope_notes": [
+    "Top10 ordered per window-digest row, not aggregated across windows; AVG_PROCESSED_KEYS/AVG_TOTAL_KEYS are key counts, not AVG_RESULT_ROWS.",
+    "Initial long_transactions NOW()-START_TIME ages are NOT validated due to table/session timestamp mismatch; do not classify returned row as 8-hour transaction. Follow-up transaction_clock_check returns raw unfiltered rows up to 100.",
+    "Full inspection history aggregation has no time filter; supplement filters window end >= query NOW()-30 minutes, without slicing individual events within a window."
+  ]
+}

@@ -1,0 +1,336 @@
+{
+  "started_at": "2026-10-02T09:12:08.033863+08:00",
+  "checks": [
+    {
+      "name": "clock",
+      "sql": "SELECT NOW(6) db_now, UTC_TIMESTAMP(6) db_utc, @@session.time_zone tz",
+      "at": "2026-10-02T09:12:08.985933+08:00",
+      "rows": [
+        {
+          "db_now": "2026-10-02 09:12:09.094225",
+          "db_utc": "2026-10-02 01:12:09.094225",
+          "tz": "+08:00"
+        }
+      ],
+      "ok": true,
+      "wall_ms": 15.444334130734205
+    },
+    {
+      "name": "structure",
+      "sql": "SHOW CREATE TABLE squad_lab.orders_big",
+      "at": "2026-10-02T09:12:09.002700+08:00",
+      "rows": [
+        {
+          "Table": "orders_big",
+          "Create Table": "CREATE TABLE `orders_big` (\n  `id` bigint NOT NULL /*T![auto_rand] AUTO_RANDOM(5) */,\n  `user_id` bigint DEFAULT NULL,\n  `amount` decimal(10,2) DEFAULT NULL,\n  `status` varchar(16) DEFAULT NULL,\n  `note` varchar(256) DEFAULT NULL,\n  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`) /*T![clustered_index] CLUSTERED */\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin /*T![auto_rand_base] AUTO_RANDOM_BASE=991407 */"
+        }
+      ],
+      "ok": true,
+      "wall_ms": 22.630624938756227
+    },
+    {
+      "name": "indexes",
+      "sql": "SHOW INDEX FROM squad_lab.orders_big",
+      "at": "2026-10-02T09:12:09.026537+08:00",
+      "rows": [
+        {
+          "Table": "orders_big",
+          "Non_unique": 0,
+          "Key_name": "PRIMARY",
+          "Seq_in_index": 1,
+          "Column_name": "id",
+          "Collation": "A",
+          "Cardinality": 0,
+          "Sub_part": null,
+          "Packed": null,
+          "Null": "",
+          "Index_type": "BTREE",
+          "Comment": "",
+          "Index_comment": "",
+          "Visible": "YES",
+          "Expression": null,
+          "Clustered": "YES",
+          "Global": "NO"
+        }
+      ],
+      "ok": true,
+      "wall_ms": 17.54104159772396
+    },
+    {
+      "name": "memory",
+      "sql": "SELECT MEMORY_CURRENT,MEMORY_LIMIT FROM INFORMATION_SCHEMA.MEMORY_USAGE LIMIT 1",
+      "at": "2026-10-02T09:12:09.045312+08:00",
+      "rows": [
+        {
+          "MEMORY_CURRENT": 54648832,
+          "MEMORY_LIMIT": 1717986918
+        }
+      ],
+      "ok": true,
+      "wall_ms": 15.116624999791384
+    },
+    {
+      "name": "locks",
+      "sql": "SELECT COUNT(*) n FROM INFORMATION_SCHEMA.DATA_LOCK_WAITS",
+      "at": "2026-10-02T09:12:09.061648+08:00",
+      "rows": [
+        {
+          "n": 0
+        }
+      ],
+      "ok": true,
+      "wall_ms": 58.26970795169473
+    },
+    {
+      "name": "ddl",
+      "sql": "SELECT JOB_ID,JOB_TYPE,STATE FROM INFORMATION_SCHEMA.DDL_JOBS WHERE TABLE_NAME='orders_big' ORDER BY JOB_ID DESC LIMIT 5",
+      "at": "2026-10-02T09:12:09.120576+08:00",
+      "rows": [
+        {
+          "JOB_ID": 130,
+          "JOB_TYPE": "create table",
+          "STATE": "synced"
+        },
+        {
+          "JOB_ID": 128,
+          "JOB_TYPE": "drop table",
+          "STATE": "synced"
+        },
+        {
+          "JOB_ID": 127,
+          "JOB_TYPE": "add index",
+          "STATE": "synced"
+        },
+        {
+          "JOB_ID": 126,
+          "JOB_TYPE": "add column",
+          "STATE": "synced"
+        },
+        {
+          "JOB_ID": 125,
+          "JOB_TYPE": "create table",
+          "STATE": "synced"
+        }
+      ],
+      "ok": true,
+      "wall_ms": 53.05225029587746
+    },
+    {
+      "name": "boundary_semantics",
+      "sql": "SELECT note, note LIKE '%-042' old_match, RIGHT(note,4)='-042' new_match,\n ((note LIKE '%-042') <=> (RIGHT(note,4)='-042')) same\n FROM (SELECT CAST(NULL AS CHAR(256) CHARACTER SET utf8mb4) COLLATE utf8mb4_bin note\n UNION ALL SELECT '' UNION ALL SELECT '042' UNION ALL SELECT '-042'\n UNION ALL SELECT 'abc-042' UNION ALL SELECT '中文-042' UNION ALL SELECT 'abc-042 '\n UNION ALL SELECT 'abc-042x' UNION ALL SELECT 'ABC-042' UNION ALL SELECT 'x%-042'\n UNION ALL SELECT 'abc-043' UNION ALL SELECT '🙂-042') t",
+      "at": "2026-10-02T09:12:09.174845+08:00",
+      "rows": [
+        {
+          "note": null,
+          "old_match": null,
+          "new_match": null,
+          "same": 1
+        },
+        {
+          "note": "",
+          "old_match": 0,
+          "new_match": 0,
+          "same": 1
+        },
+        {
+          "note": "042",
+          "old_match": 0,
+          "new_match": 0,
+          "same": 1
+        },
+        {
+          "note": "-042",
+          "old_match": 1,
+          "new_match": 1,
+          "same": 1
+        },
+        {
+          "note": "abc-042",
+          "old_match": 1,
+          "new_match": 1,
+          "same": 1
+        },
+        {
+          "note": "中文-042",
+          "old_match": 1,
+          "new_match": 1,
+          "same": 1
+        },
+        {
+          "note": "abc-042 ",
+          "old_match": 0,
+          "new_match": 0,
+          "same": 1
+        },
+        {
+          "note": "abc-042x",
+          "old_match": 0,
+          "new_match": 0,
+          "same": 1
+        },
+        {
+          "note": "ABC-042",
+          "old_match": 1,
+          "new_match": 1,
+          "same": 1
+        },
+        {
+          "note": "x%-042",
+          "old_match": 1,
+          "new_match": 1,
+          "same": 1
+        },
+        {
+          "note": "abc-043",
+          "old_match": 0,
+          "new_match": 0,
+          "same": 1
+        },
+        {
+          "note": "🙂-042",
+          "old_match": 1,
+          "new_match": 1,
+          "same": 1
+        }
+      ],
+      "ok": true,
+      "wall_ms": 18.904457800090313
+    },
+    {
+      "name": "explain_before",
+      "sql": "EXPLAIN FORMAT='brief' SELECT COUNT(*), SUM(amount) FROM squad_lab.orders_big WHERE note LIKE '%-042' AND status='new'",
+      "at": "2026-10-02T09:12:09.195319+08:00",
+      "rows": [
+        {
+          "id": "StreamAgg",
+          "estRows": "1.00",
+          "task": "root",
+          "access object": "",
+          "operator info": "funcs:count(Column#11)->Column#7, funcs:sum(Column#12)->Column#8"
+        },
+        {
+          "id": "└─TableReader",
+          "estRows": "1.00",
+          "task": "root",
+          "access object": "",
+          "operator info": "data:StreamAgg"
+        },
+        {
+          "id": "  └─StreamAgg",
+          "estRows": "1.00",
+          "task": "cop[tikv]",
+          "access object": "",
+          "operator info": "funcs:count(1)->Column#11, funcs:sum(squad_lab.orders_big.amount)->Column#12"
+        },
+        {
+          "id": "    └─Selection",
+          "estRows": "209.72",
+          "task": "cop[tikv]",
+          "access object": "",
+          "operator info": "eq(squad_lab.orders_big.status, \"new\"), like(squad_lab.orders_big.note, \"%-042\", 92)"
+        },
+        {
+          "id": "      └─TableFullScan",
+          "estRows": "262144.00",
+          "task": "cop[tikv]",
+          "access object": "table:orders_big",
+          "operator info": "keep order:false, stats:partial[status:unInitialized, note:unInitialized]"
+        }
+      ],
+      "ok": true,
+      "wall_ms": 42.49604092910886
+    },
+    {
+      "name": "snapshot_begin",
+      "sql": "START TRANSACTION WITH CONSISTENT SNAPSHOT",
+      "at": "2026-10-02T09:12:09.238733+08:00",
+      "rows": [],
+      "ok": true,
+      "wall_ms": 16.251083929091692
+    },
+    {
+      "name": "baseline_original_1",
+      "sql": "SELECT COUNT(*), SUM(amount) FROM squad_lab.orders_big WHERE note LIKE '%-042' AND status='new'",
+      "at": "2026-10-02T09:12:09.255531+08:00",
+      "rows": [
+        {
+          "COUNT(*)": 129,
+          "SUM(amount)": "12771.00"
+        }
+      ],
+      "ok": true,
+      "wall_ms": 196.665917057544
+    },
+    {
+      "name": "baseline_original_2",
+      "sql": "SELECT COUNT(*), SUM(amount) FROM squad_lab.orders_big WHERE note LIKE '%-042' AND status='new'",
+      "at": "2026-10-02T09:12:09.453255+08:00",
+      "rows": [
+        {
+          "COUNT(*)": 129,
+          "SUM(amount)": "12771.00"
+        }
+      ],
+      "ok": true,
+      "wall_ms": 198.1172077357769
+    },
+    {
+      "name": "baseline_original_3",
+      "sql": "SELECT COUNT(*), SUM(amount) FROM squad_lab.orders_big WHERE note LIKE '%-042' AND status='new'",
+      "at": "2026-10-02T09:12:09.652163+08:00",
+      "rows": [
+        {
+          "COUNT(*)": 129,
+          "SUM(amount)": "12771.00"
+        }
+      ],
+      "ok": true,
+      "wall_ms": 196.89983408898115
+    },
+    {
+      "name": "baseline_original_4",
+      "sql": "SELECT COUNT(*), SUM(amount) FROM squad_lab.orders_big WHERE note LIKE '%-042' AND status='new'",
+      "at": "2026-10-02T09:12:09.850104+08:00",
+      "rows": [
+        {
+          "COUNT(*)": 129,
+          "SUM(amount)": "12771.00"
+        }
+      ],
+      "ok": true,
+      "wall_ms": 200.76395897194743
+    },
+    {
+      "name": "baseline_original_5",
+      "sql": "SELECT COUNT(*), SUM(amount) FROM squad_lab.orders_big WHERE note LIKE '%-042' AND status='new'",
+      "at": "2026-10-02T09:12:10.051841+08:00",
+      "rows": [
+        {
+          "COUNT(*)": 129,
+          "SUM(amount)": "12771.00"
+        }
+      ],
+      "ok": true,
+      "wall_ms": 194.3209171295166
+    },
+    {
+      "name": "snapshot_end",
+      "sql": "ROLLBACK",
+      "at": "2026-10-02T09:12:10.247431+08:00",
+      "rows": [],
+      "ok": true,
+      "wall_ms": 15.076708048582077
+    }
+  ],
+  "baseline_wall_ms": [
+    196.665917057544,
+    198.1172077357769,
+    196.89983408898115,
+    200.76395897194743,
+    194.3209171295166
+  ],
+  "baseline_mean_ms": 197.35356699675322,
+  "baseline_median_ms": 196.89983408898115,
+  "all_gates_passed": true,
+  "ended_at": "2026-10-02T09:12:10.264101+08:00"
+}

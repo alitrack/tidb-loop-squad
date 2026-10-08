@@ -1,0 +1,466 @@
+TOTAL_LINES: 464
+US
+Messages
+Channels, threads, Q&A, DMs, and system updates
+All
+Channels
+Threads
+DMs
+System
+Conversations
+db-值班室
+just now
+squad-lead: ✅ 按你授权的演示验收口径，P1 已关闭。#t2 及全部子任务已完成。 我已核验入口文件哈希、原始结果并重算计时： 演示入口已切换至 note_suffix4='-042' AND status='new'。 新入口5次客户端耗时均低于25 ms：平均15.017 ms，范围14.275–16.973 ms。 INFORMATION_SCHEMA.STATEMENTS_SUMMARY_HISTORY 命中本次唯一执行标记：5次执行，实际使用新索引，平均处理129 keys，错误/警告均0；服务端平均 2.388 ms。 squad_lab.orders_big 同快照旧新结果一致：COUNT=129、SUM=12771.00。 关闭的是演示环境事件，不外推真实生产SLO或峰值负载恢复。原样 LIKE 仍慢；此次通过的是已切换的显式尾缀查询。阶段报告、变更后报告及本次关闭证据均已留存。
+SQ
+squad-lead
+1d ago
+No recent message
+RE
+reporter
+1d ago
+No recent message
+DI
+diagnostician
+1d ago
+No recent message
+Quick Start
+1d ago
+user_df97db0ac6: 请帮我做一个可以直接在当前 Loop 话题中预览和游玩的像素风网页小游戏，项目名称：《愤怒的小鸟》。 要求： 做成单个、自包含的 index.html 文件。 不需要安装任何依赖，也不要使用远程资源。 可以使用 HTML、CSS 和原生 JavaScript，比如 Canvas、鼠标拖拽事件和 CSS 动画。 游戏需要完整可玩：有开始、重新开始、得分、胜利或失败反馈。 左侧是一只可拖拽发射的红色小鸟，右侧有绿色小猪和可碰撞目标。 玩家拖动小鸟，松开后反方向发射。 需要有简单的重力、碰撞、弹跳和命中判定，小鸟击中小猪后显示挑战成功。 画面清楚，操作直观，代码尽量简单，适合教程演示。 完成后： 使用 send_message 回复当前话题，并通过 file_paths 附上生成的 index.html，让我可以直接在 Loop 中预览。 在同一条消息中附上简短的完成说明。 不要打开系统浏览器，也不要只回复本地文件路径。
+Workflow
+System
+1d ago
+No recent message
+Task
+System
+1d ago
+No recent message
+Channel
+/
+#db-值班室
+5
+Chat
+Threads
+Tasks
+Pinned
+Attachments
+Announcement
+Load earlier messages
+SQ
+squad-lead
+09/30, 06:23 PM
+
+验收结论：按人类最新纠正的范围，换防后的巡检取数 → 留存证据 → 频道回传链路已验证通过。
+
+我已读取并核对附件：10 项查询结果均为成功，包含实际 SQL 和采集时间。发现与边界如下：
+
+INFORMATION_SCHEMA.STATEMENTS_SUMMARY_HISTORY 前三条记录总耗时为 45.5 / 41.9 / 19.1 ms，各执行 1 次；本次展示的是历史表记录排序，不是跨窗口按 digest 合并排名。
+该表可见窗口汇总 22 次执行、0 错误、0 警告。业务筛选仅有会话初始化语句，不能据此宣布此前业务超时已恢复或关闭原 P1。
+本轮 HISTORY 查询成功，不代表上一轮 STATEMENTS_SUMMARY 的 1142 权限拒绝已修复；两轮结论必须分开。
+
+@reporter 请沿用正在整理的报告，以该附件为证据，按“链路验证结论／实测指标／未验证范围”输出简明 Markdown 回本频道；保留数据库时区未核验、耗时会话检查不等于完整长事务检查两项限制，不需另行取数。
+
+RE
+reporter
+09/30, 06:23 PM
+巡检简报｜2026-09-30
+链路验证结论
+
+已复核附件：脚本覆盖的 10 项查询均成功，无失败项，包含实际 SQL、返回值及采集时间。结合 inspector 的留存回报，本轮“取数 → 留存证据 → 频道回传”链路验证通过。报告员未另行取数。[E1]
+
+实测指标
+
+采集时间：18:21:07（UTC+8）；历史表返回窗口：18:16:21–18:21:07，数据库时区未单独核验。
+
+指标	本轮结果	证据
+历史表执行／错误／警告	22／0／0	E2
+总耗时前三条记录	45.5／41.9／19.1 ms，各执行 1 次	E3
+锁等待／可见死锁记录	0／0	E4
+非 Sleep 且耗时 >5 秒的会话	0 条	E4
+最近 10 条 DDL	均为 synced	E5
+当前内存／限额	78,528,512／1,717,986,918 bytes；脚本水位 4.6%	E5
+未验证范围
+Top3 是 INFORMATION_SCHEMA.STATEMENTS_SUMMARY_HISTORY 记录排序，不是跨窗口按 digest 合并排名。[E3]
+业务筛选仅返回 USE / SET；不足以证明业务超时恢复，也不构成关闭原 P1 的依据。本摘要不作业务根因或全局健康结论。[E6]
+本轮 HISTORY 查询成功，不代表上一轮 STATEMENTS_SUMMARY 的 1142 权限拒绝已修复；两轮分别记录。
+耗时会话检查不等于完整长事务检查；死锁为查询时可见记录，不代表历史上从未发生。[E4]
+数据库窗口时区未核验；尚未进行同口径基线对比，不作趋势结论。[E2]
+
+证据索引：均指附件 inspect_20260930_182107_evidence.json；实际 SQL 见 queries。
+
+编号	附件定位
+E1	collection_start/end、全部 results.*.ok；留存信息见 inspector 回报
+E2	results.error_summary、scope_note
+E3	results.top_sql 及对应查询
+E4	results.lock_waits、deadlocks、long_txns 及对应查询
+E5	results.ddl_jobs_recent、memory
+E6	results.biz_sql
+Show more
+US
+user_df97db0ac6
+08:55
+
+@squad-lead 🚨 P1 告警：业务反馈订单查询大面积超时，orders_big 相关查询延迟飙高，请立即接管排查。
+发完告诉我，我开始旁路监控小队接管进度。
+
+SQ
+squad-lead
+08:56
+
+P1 已接管。 当前症状：订单查询大面积超时，orders_big 相关查询延迟飙高；实际影响范围、起始时间和根因尚待取证。立即组织只读取数与定向诊断，未经授权不执行 DDL、终止会话或改配置。接管消息已发出，你可以开始旁路监控；我会继续推进并在发现和结论节点同步。
+
+SQ
+squad-lead
+08:57
+
+P1 派单｜主任务 #t2，按先取证后定因推进。
+
+@inspector 请领取 #t3（#tsk_6tj046w6ue4akg2uox2n）：目标是量化本次影响。立即用现有 tidb_env.sh / skills/dba_inspect.py 做只读巡检，补取 INFORMATION_SCHEMA.STATEMENTS_SUMMARY_HISTORY 当前可见近窗中 orders_big 的 Top10（digest、次数、总/平均/最大耗时、扫描量、错误）；同时查锁等待、死锁、耗时会话/可读长事务、DDL、内存。核验数据库时间与时区，注明窗口及筛选条件，历史表跨窗聚合需明确口径。输出：指标表＋来源表名＋实际 SQL＋原始附件；首批结果或阻塞请优先回本频道，并 @队长、@diagnostician。失败与零值分开。
+
+@diagnostician 请领取 #t4（#tsk_dunlj33lf6xtqd3bk2kx）：目标是证实/证伪根因。现在先只读核验 orders_big 当前库名、表结构、索引、统计信息和近期 DDL，收到 inspector 的目标 SQL 后做普通 EXPLAIN 与定向验证，避免重复全量取数。输出：事实／假说及预期现象／验证 SQL 与实测结果／根因或证据缺口／修复建议、风险、回滚和复测门槛；每个结论必须有表名和指标值，机制引用 TiDB 官方文档。不要执行 DDL、KILL、配置修改或高成本 EXPLAIN ANALYZE。
+
+本轮使用 10 月 2 日新证据，不得将 9 月 30 日链路验证结果或旧修复当成本次状态。派单已发，你可以开始旁路监控；我负责审证据、汇总结论及后续报告。
+
+SQ
+squad-lead
+08:57
+
+**取证口径检查发现（不是根因结论）：**我已核对本地巡检脚本，默认 Top SQL 没有时间过滤、没有 digest，也没有扫描量；AVG_RESULT_ROWS 是返回行数，不能当扫描行数；long_txns 实际仅查非 Sleep 且超过 5 秒的会话。
+
+@inspector #t3 请用补充只读查询填齐上述缺口，先核验字段可用性；近窗建议覆盖告警前后，并报告实际可见起止时间，若无当前业务样本必须明确标缺失。快照写入失败在脚本里会被忽略，请单独读回核验，不以脚本退出成功代替留存成功。
+
+本次根因仍待当前证据，P1 保持进行中。验收将区分：数据库指标改善、同类业务查询复测通过、应用超时恢复；缺任何一项都不宣布业务恢复。
+
+IN
+inspector
+08:58
+
+@squad-lead @diagnostician #t3 首批新证据已取得（10 月 2 日 08:57，UTC+8）。
+
+INFORMATION_SCHEMA.STATEMENTS_SUMMARY_HISTORY 近 30 分钟筛选中，目标归一化 SQL 为 SELECT COUNT(?), SUM(amount) FROM squad_lab.orders_big WHERE note LIKE ? AND status = ?，digest：8c720334eba435f01617c9475a9118fd3af0c7ed1ef96c27b7757e0ea5b9cba8。
+
+同表三个窗口（非三个独立 SQL）：
+
+08:54:40–08:55:41：283 次，总 51,809.569 ms，平均 183.073 ms，最大 201.298 ms。
+08:55:41–08:56:42：500 次，总 91,768.736 ms，平均 183.537 ms，最大 203.239 ms。
+08:56:42–08:57:43：202 次，总 37,100.217 ms，平均 183.664 ms，最大 199.176 ms。
+各窗口 AVG_PROCESSED_KEYS=262144、AVG_TOTAL_KEYS=262146、AVG_RESULT_ROWS=1、SUM_ERRORS=0。前两项是存储 key 扫描指标，不将返回行数当扫描行数，也不据此推断应用未超时。
+
+补充查询字段均可读，快照已读回核验。长事务表可读，但 START_TIME 与会话 NOW() 出现时区口径差异，正在补核；暂不把直接相减所得时长作为长事务结论。完整 SQL、其余指标与原始附件随后在本轮交付。
+
+DI
+diagnostician
+08:59
+
+@squad-lead @inspector 结构侧新证据（10 月 2 日 08:57:52，数据库会话 +08:00）：当前 squad_lab.orders_big 经 SHOW CREATE TABLE / SHOW INDEX 确认仅有 PRIMARY(id)，无二级索引。SHOW STATS_META 行数 262,144、Modify_count=0；健康度=100，但 SHOW STATS_HISTOGRAMS 仅返回 id 一项，不能据此推断谓词列统计完整。
+INFORMATION_SCHEMA.DDL_JOBS 返回该表 8 条历史记录，最近 JOB_ID=130（9 月 30 日建表，synced）；旧 add index 在后续 drop/create 之前，不代表当前有索引。此处均为本轮重新读取。
+结合 inspector 每次 AVG_PROCESSED_KEYS=262,144，缺失过滤索引导致全表扫描的假说已获支持，尚需普通 EXPLAIN 闭合。请补目标 QUERY_SAMPLE_TEXT 与 plan_digest（尤其 LIKE 的实际模式），我不重复取 Top10。未执行业务 SQL、DDL 或 ANALYZE。
+
+metadata_20261002.json
+SQ
+squad-lead
+08:59
+
+P1 发现：持续高扫描量已与当前缺少二级索引的表结构对应，执行计划尚待闭合。
+
+按 inspector 首批 INFORMATION_SCHEMA.STATEMENTS_SUMMARY_HISTORY 三个窗口重算，同一 digest 共 985 次，总耗时 180,678.522 ms，加权平均 183.430 ms，最大 203.239 ms；各窗口每次平均处理 262,144 keys、返回 1 行。不是三条独立 SQL，也不是应用端超时率。
+我已核对 diagnostician 的原始附件：SHOW INDEX FROM squad_lab.orders_big 只有 PRIMARY(id)；SHOW STATS_META 行数 262,144。INFORMATION_SCHEMA.DDL_JOBS 显示旧建索引发生在后续删表、重建之前，不能沿用旧修复结论。
+
+当前仅将“缺少匹配过滤索引导致扫描”列为待执行计划验证的假说，不把它直接当作应用大面积超时的完整根因。下一证据缺口是实际 LIKE 参数、plan_digest 和普通 EXPLAIN；两位继续既定交接即可。未经时区核验的长事务时长暂不采用，P1 保持进行中。
+
+DI
+diagnostician
+09:00
+
+@squad-lead @inspector 扫描机制已闭合，业务超时因果仍需分开。 按已知 digest 定向补取 1 条样本（未重复 Top10），实际条件为 note LIKE '%-042' AND status='new'。09:00:05 普通 EXPLAIN 确认 TableFullScan estRows=262144，且 stats:partial[status:unInitialized, note:unInitialized]；仅改写为 RIGHT(note,4)='-042' 的 EXPLAIN 仍是同规模全表扫描。
+同一 digest 的历史 PLAN 已携带实测：扫描 262,144 keys、过滤后 129 行、聚合返回 1 行；root 189.1 ms，TiKV process 187.3 ms、wait 28.5 µs。这是读取已有 PLAN，未执行 EXPLAIN ANALYZE。 当前只有主键＋尾缀匹配且没有过滤访问路径，是该 SQL 扫描放大的确定机制；统计缺列也已确认，但单独 ANALYZE 不能创造索引访问路径。
+正在整理可审批的索引/尾缀列方案、回滚与复测门槛；本轮未改变数据库。DB 样本约 0.19 秒不能单独解释“大面积应用超时”，需应用超时阈值及请求链路对应。
+
+target_sample_20261002.json
+explain_20261002.json
+SQ
+squad-lead
+09:01
+
+阶段诊断：已确认目标 SQL 的全表扫描机制；尚不能将“大面积应用超时”全部归因于它。
+
+我已核对两份原始附件：squad_lab.orders_big 的普通 EXPLAIN 为 TableFullScan，估算 262,144 行；INFORMATION_SCHEMA.STATEMENTS_SUMMARY_HISTORY.PLAN 的既有执行样本实扫 262,144 keys → 过滤后 129 行 → 聚合 1 行，root 189.1 ms、TiKV process 187.3 ms。结合当前仅有主键，证据确认 note LIKE '%-042' AND status='new' 缺少过滤访问路径。单独改写 RIGHT(note,4) 仍全表扫，不能作为已验证修复。
+
+**应用侧证据缺口：**请提供超时阈值，以及一条告警时段失败请求的时间/trace ID或现成监控入口（无需密码）；需对齐接口总耗时、连接池等待、数据库耗时及重试，才能判断 0.19 秒数据库样本与应用超时的因果关系。小队继续整理可审批修复方案，不等待这些信息才推进数据库侧工作。当前未执行任何修复，P1 不关闭。
+
+IN
+inspector
+09:02
+
+@squad-lead @diagnostician #t3 完整证据交付，已提交审阅。附件包含全部实际 SQL、完整 digest、样本、plan_digest、原始值与采集时间。
+
+近窗补充口径：10 月 2 日 08:57:50 查询 INFORMATION_SCHEMA.STATEMENTS_SUMMARY_HISTORY，条件 SUMMARY_END_TIME >= NOW()-INTERVAL 30 MINUTE，文本含 orders_big，并限定 squad_lab schema 或库限定表名；按每窗口 SUM_LATENCY DESC LIMIT 10。
+返回 5 条窗口记录／3 个 digest，窗口覆盖 08:51:38–08:57:43：前三条已发频道；其余是 COUNT(?) FROM orders_big（1 次，总／平均／最大均 99.737 ms，平均 processed/total keys=262144/262146）及 SHOW INDEX FROM orders_big（1 次，均 3.194 ms，keys=0/0）。均无错误。不是 10 个独立 SQL，也未把返回行数当扫描量。
+按同表原始纳秒值汇总目标三窗：985 次，总 180678.523 ms，加权平均 183.430 ms；相较相加已舍入行值，总耗时差 0.001 ms。
+08:59:23 的另一次覆盖查询已见 7 条／5 个 digest、08:51:38–08:58:43；这是较晚采样，不混入上述 Top10。
+
+完整巡检（同日 08:57:15 新采集）
+
+来源表	结果
+INFORMATION_SCHEMA.DATA_LOCK_WAITS	0 条
+INFORMATION_SCHEMA.DEADLOCKS	可见记录 0 条
+INFORMATION_SCHEMA.CLUSTER_PROCESSLIST	非 Sleep 且 TIME>5 秒：0 条，仅代表耗时会话
+INFORMATION_SCHEMA.DDL_JOBS	最近 10 条均 synced；最新 JOB_ID=130，建表 orders_big，创建时间 9 月 30 日 15:00:47.023；不代表当前索引状态
+INFORMATION_SCHEMA.MEMORY_USAGE	当前 75,554,816 bytes；限额 1,717,986,918 bytes；峰值 106,037,248 bytes；水位 4.4%
+INFORMATION_SCHEMA.STATEMENTS_SUMMARY_HISTORY	默认脚本无近窗过滤：07:16:42–08:57:15，3957 次、错误/警告均 0；不是应用超时统计
+
+时区／长事务限制：会话函数核验 NOW=08:57:50.454186、UTC_TIMESTAMP=00:57:50.454186，会话时区 +08:00、系统时区 UTC。
+INFORMATION_SCHEMA.CLUSTER_TIDB_TRX 未按时长过滤补查（LIMIT 100）返回 1 条 Idle：START_TIME=00:59:23.674，当时 NOW=08:59:23.697344、UTC_TIMESTAMP=00:59:23.697345。对 NOW 相减 28799 秒，对 UTC 时钟相减 0 秒。不采用前者作为长事务时长，不宣称全局长事务为零。原始查询与限制均保留。
+
+08:59:44 样本补查确认 LIKE '%-042' AND status='new'，plan_digest=f647fd78aa620ee4d77394eacd7227b6c41fd47a5cd433720d083f29c2939dae（来源同一历史表）。未执行业务 SQL。
+全部取证查询成功；原始巡检 inspect_20261002_085715.json 和附件均保存至 ~/.tidb_squad/history/ 并读回核验。未执行 DDL、KILL、ANALYZE 或配置修改；未作业务恢复结论。
+
+Show more
+inspect_20261002_085750_orders_big_evidence.json
+SQ
+squad-lead
+09:03
+
+**#t3 取证已验收，P1 本身未关闭。**我已读取完整附件并重算原始纳秒值：目标三窗 985 次、总 180,678.523 ms、加权平均 183.430 ms；更正我此前按已舍入行值相加的总耗时，差 0.001 ms，不影响判断。6 项补充查询与10 项完整巡检均成功。
+
+本轮 INFORMATION_SCHEMA.DATA_LOCK_WAITS / DEADLOCKS 可见记录均 0，MEMORY_USAGE 水位 4.4%；这些是采集时快照，不能排除其他时段阻塞，也不能替代应用超时证据。
+
+@reporter 请领取 #t5（#tsk_4d6mfrtei6cqmy0qas5f）：目标是形成可验收的事故阶段报告。现在整理本次 #t3 附件及 #t4 已发执行计划证据；输出 Markdown＋PDF，结构为时间线、实测指标与证据索引、确定的扫描机制、未闭合的应用超时因果、待审批方案与回滚/复测条件。修复部分待 diagnostician 当前 #t4 方案补齐后纳入；勿复用旧表修复结论，勿把“取证通过”写成“业务恢复”。报告回本频道并 @队长。
+
+DI
+diagnostician
+09:04
+
+@squad-lead @reporter #t4 诊断交付，已提交审阅；未执行修复，不宣告业务恢复。
+
+确认事实：SHOW INDEX 仅 PRIMARY(id)；目标普通 EXPLAIN 为全扫 262,144，status/note 统计未初始化。STATEMENTS_SUMMARY_HISTORY.PLAN 实测扫描 262,144、过滤 129、root 189.1 ms；当前缺少过滤访问路径使尾缀查询全扫。仅改成 RIGHT 的 EXPLAIN 仍全扫，单独补统计也不能创造索引。
+已读回核对 inspector 附件：目标三窗 985 次、总 180,678.523 ms、加权均 183.430 ms，按原始纳秒汇总。
+
+建议审批方向：业务确认固定 4 字符尾缀语义后，采用虚拟生成列 note_suffix4=RIGHT(note,4)，联合覆盖索引 (status,note_suffix4,amount)，查询显式使用尾缀列；先隔离环境验证结果等价及索引计划，再审批生产回填和统计采集。完整候选 SQL、风险、先回退应用再删索引/列的回滚顺序、复测门槛见附件。TiDB 生成列 / 索引策略
+
+缺口：应用 deadline、连接池/重试及请求 trace 尚缺，约 0.19 秒 DB 样本不足以证明大面积超时的完整因果；需单独验收端到端恢复。Healthy=100 不代表列统计齐全，见官方统计口径。
+附件含事实、逐项假说与验证、全部实际 SQL/原始结果；本人诊断共 15 项，14 成功，辅助 SHOW STATS_COL_USAGE 的 1064 失败已单列，未当零值。
+
+orders_big_diagnostic_evidence_20261002.json
+orders_big_diagnosis_20261002.md
+SQ
+squad-lead
+09:05
+
+#t4 诊断审阅通过；本次数据库侧结论已形成，P1 尚未恢复。
+
+确定问题是 squad_lab.orders_big 仅有主键，目标尾缀过滤无索引访问路径：普通 EXPLAIN 全扫 262,144 行，STATEMENTS_SUMMARY_HISTORY.PLAN 实扫 262,144 keys、过滤后 129 行，样本耗时 189.1 ms。应用大面积超时的完整因果仍缺请求链路证据。
+
+**建议下一步仅审批隔离验证，不直接生产变更：**确认业务固定四字符尾缀语义后，测试虚拟列 note_suffix4=RIGHT(note,4)、覆盖索引 (status,note_suffix4,amount) 及显式尾缀列查询；验证旧新结果一致、实际走索引及负载无回归，再提交生产审批。TiDB 官方支持虚拟生成列建索引，但本候选方案尚未实测。
+
+请确认：是否批准在指定的隔离环境验证，并提供该环境入口？ 生产 DDL、ANALYZE、应用发布均仍未获授权；不沿用 9 月 30 日的旧授权。另仍需应用超时阈值及失败请求 trace/监控入口，才能验收端到端恢复。
+
+@reporter #t5 请纳入已审阅的 #t4 最终附件，明确区分 inspector 16 项成功与 diagnostician 15 项中14成功、1项1064辅助探测失败；将所有性能门槛标为待确认目标，不写成已达成。
+
+US
+user_df97db0ac6
+09:06
+
+授权执行修复方案：按 diagnostician 提议创建虚拟生成列 note_suffix4 = RIGHT (note,4) 和联合覆盖索引 (status, note_suffix4, amount)，先隔离验证再上生产，注意风险与回滚预案。完成后复测同一条业务 SQL 并回报 25ms 级对比数据。
+
+RE
+reporter
+09:09
+
+报告已复核并生成，正在做 PDF 逐页检查。已将 09:06:49 新授权纳入时间线，状态改为“先隔离验证再生产的修复流程已获授权，尚未收到执行及复测证据”；不会再写成当前未授权。25 ms 级对比将标为用户要求的复测目标，不预写达标，现有 985 次基线与历史单次 189.1 ms 样本分开保留。
+
+RE
+reporter
+09:10
+
+@squad-lead #t5 事故阶段报告已提交审阅，附 Markdown＋6 页 PDF。 已复核原始附件、重算指标，并逐页检查 PDF。
+
+基线：目标三窗 985 次，总 180,678.523 ms，加权平均 183.430 ms；全扫机制确认，应用超时完整因果未闭合。
+分开记录 inspector 16 项成功与 diagnostician 14 项成功、1 项 1064 辅助探测失败。
+事件截止 09:06:49，已纳入“先隔离验证再生产”的新授权；截至该截点尚无变更/复测证据。25 ms 级对比及其他性能门槛均为待验证目标，不是已达成结果。
+包含时间线、表名与证据索引、方案 SQL、回滚顺序、复测条件及恢复边界；本报告不宣布业务恢复或关闭 P1。
+p1-orders-big-stage-report-20261002.pdf
+p1-orders-big-stage-report.md
+US
+user_df97db0ac6
+09:10
+
+本环境即为演示环境，隔离验证与生产合并执行：直接创建生成列与索引并复测同一条业务 SQL。
+
+SQ
+squad-lead
+09:11
+
+按 09:10:52 最新授权推进：当前就是演示环境，隔离与生产步骤合并，不再等待独立测试环境。
+
+@diagnostician 请立即领取 #t6（#tsk_ny7spcjeto9b7jeedk4o），作为本轮唯一数据库变更执行者：先确认当前结构防止重复 DDL，然后在现环境创建已批准的虚拟 note_suffix4 和 (status,note_suffix4,amount) 覆盖索引，按已批准方案采集统计并复测。旧任务描述的“先独立隔离”已被最新授权替代。
+
+验收输出：实际 DDL 与状态、变更前后结构、原样 LIKE SQL及显式尾缀列等价 SQL各自的普通 EXPLAIN；同快照 COUNT/SUM 一致性；同连接/参数下受控串行各5次 wall time（列明每次、均值/中位数/范围）。25 ms 仅作为对比目标，原 SQL 若仍全扫必须如实报告，不能用改写 SQL 的数据冒称原 SQL 已加速。不要部署应用或扩大变更；异常时停在当前步骤，附状态与回退建议，勿盲目重试 DDL。
+
+#t5 报告作为截至09:06:49的阶段快照保留；修复实测将另行补入，不把新授权误写成已完成。
+
+US
+user_df97db0ac6
+09:15
+
+@diagnostician #t6 进度如何？请回报当前状态。如遇阻塞，直接说明卡点。
+
+US
+user_df97db0ac6
+09:18
+
+@diagnostician 额度已恢复，请继续 #t6：创建生成列 note_suffix4 和覆盖索引 (status, note_suffix4, amount)，完成后复测并回报对比数据。
+
+DI
+diagnostician
+09:19
+
+#t6 继续执行。当前已完成变更前检查和基线，尚未执行 DDL：12 个边界样本旧/新谓词一致；原 LIKE SQL 串行 5 次均返回 COUNT=129、SUM=12771.00，客户端 wall time 平均 197.354 ms（194.321–200.764 ms）。09:12 的检查仅主键、锁等待 0，未发现数据库阻塞。现在重新确认结构后创建已授权生成列和覆盖索引、采集统计，再分别复测原 SQL 与等价 SQL；不将两者性能混报。
+
+DI
+diagnostician
+09:22
+
+@squad-lead #t6 已完成已授权 DDL 与复测，提交审阅。关键结论：等价改写达到 25 ms 目标，原样 LIKE SQL 没有达到。
+
+实际变更
+
+09:19 创建虚拟生成列与覆盖索引；INFORMATION_SCHEMA.DDL_JOBS 131（add column）、132（add index）均 synced。建索引客户端耗时 21.779 秒，统计采集 1.922 秒；变更前仅 PRIMARY，变更后列/索引均已核验。
+
+ALTER TABLE squad_lab.orders_big
+ ADD COLUMN note_suffix4 VARCHAR(4)
+ CHARACTER SET utf8mb4 COLLATE utf8mb4_bin
+ GENERATED ALWAYS AS (RIGHT(note,4)) VIRTUAL;
+CREATE INDEX idx_orders_status_suffix4_amount
+ ON squad_lab.orders_big(status,note_suffix4,amount);
+ANALYZE TABLE squad_lab.orders_big
+ COLUMNS status,note,note_suffix4,amount;
+
+对比实测（ms）
+查询	串行5次 wall time	均值	中位数	范围
+变更前原 LIKE	196.666 / 198.117 / 196.900 / 200.764 / 194.321	197.354	196.900	194.321–200.764
+变更后原 LIKE	210.613 / 181.404 / 182.914 / 182.458 / 181.544	187.787	182.458	181.404–210.613
+变更后显式尾缀	18.843 / 18.800 / 20.039 / 20.108 / 19.353	19.429	19.353	18.800–20.108
+
+变更后两组在 09:19:47–48、同连接、REPEATABLE-READ 同一快照、交替串行运行；全部返回 COUNT=129、SUM=12771.00。12 个常量边界样本谓词一致。wall time 包含客户端往返和取回，不是纯服务端执行时间；前测是较早的独立连接，不能与历史 183.430 ms 服务端均值混用。五次样本不代表峰值并发或 p95 验收。
+
+-- 原样：仍 TableFullScan，estRows=262144
+SELECT COUNT(*), SUM(amount) FROM squad_lab.orders_big
+WHERE note LIKE '%-042' AND status='new';
+-- 等价改写：IndexReader → 新索引 IndexRangeScan
+SELECT COUNT(*), SUM(amount) FROM squad_lab.orders_big
+WHERE note_suffix4='-042' AND status='new';
+
+
+保留事项：ANALYZE 成功但有 1105“列清单未列 id”警告及自动采样提示，原样保留；末检联合索引统计已加载，但虚拟列单列统计仍显示 Null_count=262144、计划估计1与实测129不符，不宣称统计完整或估计准确，未追加试探性写入。末检锁等待0、内存约6.5%，仅采样状态。
+
+未部署应用、未关闭 P1；要让业务使用这条快速路径，仍需另行批准查询改写发布。需回滚时先撤回引用尾缀列的查询，再 DROP INDEX、最后 DROP COLUMN；当前未执行回滚。附件含前后结构、全部 SQL、DDL/警告、计划及每次原始结果。
+
+Show more
+orders_big_repair_evidence_20261002.json
+SQ
+squad-lead
+09:23
+
+修复与复测已核验：列和索引创建成功；只有等价改写达到 25 ms 目标，原样 SQL 未达标。
+
+INFORMATION_SCHEMA.DDL_JOBS：131 / 132 均 synced。已核对原始记录并重算客户端 wall time：
+
+查询	5次均值	范围（ms）	计划
+变更前原 LIKE	197.354 ms	194.321–200.764	全表扫描
+变更后原 LIKE	187.787 ms	181.404–210.613	仍全表扫描
+变更后显式尾缀列	19.429 ms	18.800–20.108	新索引范围扫描
+
+变更后两组在同连接、同快照下交替执行，均返回 COUNT=129、SUM=12771.00；改写相对同期原 SQL 均值约快 9.67 倍。这是各5次串行测试，不是峰值负载或应用恢复证明。ANALYZE 警告及虚拟列统计估计偏差保留，未追加试探性变更。
+
+下一关是业务查询切换：当前应用未发布改写，继续发原 LIKE 仍无法获得这条快速路径。若要推进应用侧，请批准该固定尾缀查询改写并提供代码/发布入口；没有应用证据前，P1 不关闭。
+
+@reporter #t5 阶段版内容及6页版式已审阅；现转回进行中，请保留阶段版，补充09:10:52授权及 #t6 附件，输出变更后 Markdown＋PDF 再提交审阅。突出“原 SQL 未达标／等价改写达标／应用未切换”，不要写成业务恢复。
+
+US
+user_df97db0ac6
+09:25
+
+批准查询改写：应用侧立即切换为显式尾缀列查询（note_suffix4='-042' AND status='new'），视为演示环境的应用发布。请复测确认业务走新索引后关闭 P1。
+
+RE
+reporter
+09:29
+
+@squad-lead #t5 变更后报告已提交审阅：新增 Markdown＋5 页 PDF，原阶段版保持不变。 本版事件截止 09:23:33，已复核 #t6 原始附件并逐页检查 PDF。
+
+变更前原 LIKE 均值 197.354 ms；变更后 187.787 ms，未达 25 ms。
+变更后等价改写均值 19.429 ms，仅本次各 5 次串行测试达标。
+纳入演示环境合并授权、DDL 131/132、全部计时、统计警告与回滚顺序；不将估算行数当实际扫描量，不将数据库测试当应用恢复。
+
+**截点后更新：**已看到 09:25 的应用查询改写授权；附件中的“应用未切换”是截至 09:23:33 的证据状态。新授权不等于切换或复测已完成，本版不据此关闭 P1。
+
+p1-orders-big-post-change-report.md
+p1-orders-big-post-change-report-20261002.pdf
+SQ
+squad-lead
+09:30
+
+已核对 09:25 新授权：按你指定的演示口径，将业务 SQL 切换为显式尾缀列查询视为应用发布；不再等待未知生产代码仓库。关闭前会取一次新复测证据，不直接沿用09:19结果。
+
+@inspector 请领取 #t7（#tsk_nt8zx8dawawyamde3yh0）：将本次演示业务查询入口明确切到 note_suffix4='-042' AND status='new'，记录实际入口/SQL和切换时间；验证同快照旧新 COUNT/SUM 相等、新普通 EXPLAIN 使用 idx_orders_status_suffix4_amount，新查询串行至少5次，报告每次及均值/中位数/范围。可从 HISTORY 定向补新 digest/PLAN 执行证据，但不做无界轮询或 EXPLAIN ANALYZE，不再 DDL。输出原始附件及验收摘要回本频道并 @队长。
+
+若无独立应用仓库，务必写明“按用户约定使用演示 SQL 执行入口”，不要声称修改了真实生产应用。#t5 变更后报告保留其09:23:33截点；最终关闭记录将明确演示范围。
+
+IN
+inspector
+09:33
+
+@squad-lead #t7 新复测通过：按用户约定完成演示 SQL 入口切换，且本次实际执行已走新索引。可供演示范围 P1 关闭验收。
+
+入口与时间：本工作区没有独立应用仓库；采用明确的演示入口 demo/orders_big_active.sql，通过 uv run --with pymysql 读取该文件并使用现有连接函数执行。入口文件于 **10 月 2 日 09:31:25（UTC+8）**落地，09:32:04.566796 切入新查询执行；未声称修改未知生产应用。
+
+SELECT COUNT(*), SUM(amount) FROM squad_lab.orders_big
+WHERE note_suffix4='-042' AND status='new';
+
+
+实际执行带唯一追踪注释 demo_release_t7_20261002T093203，原 SQL 仅用于一次等价性对照，不是活动入口。
+
+同快照等价：会话函数核验连接 2348810242、隔离级别 REPEATABLE-READ、时区 +08:00；@@tidb_current_ts 前后均为 469474928079405059。同一一致性快照中，旧 LIKE 查询及新查询每次均返回 COUNT=129、SUM=12771.00（来源 squad_lab.orders_big）。
+
+新入口串行复测（客户端 perf_counter_ns 计时，含往返及取回；不是来源表指标）：
+
+次数	wall time（ms）
+1	14.432
+2	14.836
+3	14.570
+4	16.973
+5	14.275
+均值 15.017 ms，中位数 14.570 ms，范围 14.275–16.973 ms；本组每次均低于 25 ms。本次旧 SQL 对照仅执行一次，194.406 ms，不当作重复基线。	
+
+新索引执行证据：
+
+普通 EXPLAIN：IndexReader → IndexRangeScan，索引 idx_orders_status_suffix4_amount(status,note_suffix4,amount)，范围 ['new','-042']。估算行数仍为 1，不冒称估算准确。
+09:32:28 仅定向读取一次 INFORMATION_SCHEMA.STATEMENTS_SUMMARY_HISTORY，命中上述唯一注释；窗口 09:32:03–09:32:28、FIRST/LAST_SEEN 均 09:32:04、EXEC_COUNT=5，确认不是沿用早前样本。
+同表新 digest：b5f88a178c1340062c563edd6771f019b16b3ab4d31b74c4e82d3fa4071c368c；plan_digest：502a48d1ba73126fb44d4459ad9b8b0c2acd0cb7ab8e9df214fe54925cfc2484。
+同表 PLAN 实际包含新索引范围扫描，actRows=129；AVG_PROCESSED_KEYS=129、AVG_TOTAL_KEYS=131、AVG_RESULT_ROWS=1、错误/警告均 0。服务端平均 2.388 ms，与客户端 wall time 分开报告。未执行 EXPLAIN ANALYZE。
+
+原始附件及 SQL 文件均已落盘、读回并核验文件哈希、计时重算与历史标记。工作区非 Git 仓库，无法建立 Git 差异审阅，改附实际入口供直接审查。未新增 DDL 或修改统计；此次只证明授权的演示入口和串行样本通过，不代表真实生产 SLO、峰值并发或应用超时率恢复。
+
+Show more
+demo_release_20261002_093203.json
+orders_big_active.sql
+SQ
+squad-lead
+09:34
+
+✅ 按你授权的演示验收口径，P1 已关闭。#t2 及全部子任务已完成。
+
+我已核验入口文件哈希、原始结果并重算计时：
+
+演示入口已切换至 note_suffix4='-042' AND status='new'。
+新入口5次客户端耗时均低于25 ms：平均15.017 ms，范围14.275–16.973 ms。
+INFORMATION_SCHEMA.STATEMENTS_SUMMARY_HISTORY 命中本次唯一执行标记：5次执行，实际使用新索引，平均处理129 keys，错误/警告均0；服务端平均 2.388 ms。
+squad_lab.orders_big 同快照旧新结果一致：COUNT=129、SUM=12771.00。
+
+关闭的是演示环境事件，不外推真实生产SLO或峰值负载恢复。原样 LIKE 仍慢；此次通过的是已切换的显式尾缀查询。阶段报告、变更后报告及本次关闭证据均已留存。
+
+squad-lead: processing
+
+
+
+

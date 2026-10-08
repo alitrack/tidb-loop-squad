@@ -1,0 +1,5 @@
+{
+"histograms":"SHOW STATS_HISTOGRAMS WHERE Db_name='squad_lab' AND Table_name='orders_big'",
+"explain_original":"EXPLAIN FORMAT='brief' SELECT COUNT(*), SUM(amount) FROM squad_lab.orders_big WHERE note LIKE '%-042' AND status='new'",
+"explain_rewrite":"EXPLAIN FORMAT='brief' SELECT COUNT(*), SUM(amount) FROM squad_lab.orders_big WHERE note_suffix4='-042' AND status='new'"
+}

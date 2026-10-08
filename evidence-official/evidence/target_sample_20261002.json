@@ -1,0 +1,22 @@
+{
+  "collection_start": "2026-10-02T08:59:55.197485+08:00",
+  "queries": {
+    "target_sample": "SELECT SUMMARY_BEGIN_TIME,SUMMARY_END_TIME,DIGEST,PLAN_DIGEST,QUERY_SAMPLE_TEXT,PLAN FROM INFORMATION_SCHEMA.STATEMENTS_SUMMARY_HISTORY WHERE DIGEST='8c720334eba435f01617c9475a9118fd3af0c7ed1ef96c27b7757e0ea5b9cba8' AND SUMMARY_END_TIME >= NOW() - INTERVAL 30 MINUTE ORDER BY SUMMARY_END_TIME DESC LIMIT 1"
+  },
+  "results": {
+    "target_sample": {
+      "ok": true,
+      "rows": [
+        {
+          "SUMMARY_BEGIN_TIME": "2026-10-02 08:56:42",
+          "SUMMARY_END_TIME": "2026-10-02 08:57:43",
+          "DIGEST": "8c720334eba435f01617c9475a9118fd3af0c7ed1ef96c27b7757e0ea5b9cba8",
+          "PLAN_DIGEST": "f647fd78aa620ee4d77394eacd7227b6c41fd47a5cd433720d083f29c2939dae",
+          "QUERY_SAMPLE_TEXT": "SELECT COUNT(*), SUM(amount) FROM squad_lab.orders_big\n    WHERE note LIKE '%-042' AND status='new'",
+          "PLAN": "\tid                      \ttask     \testRows\toperator info                                                                              \tactRows\texecution info                                                                                                                                                                                                                                                                                                                                    \tmemory   \tdisk\n\tStreamAgg_20            \troot     \t1      \tfuncs:count(Column#11)->Column#7, funcs:sum(Column#12)->Column#8                           \t1      \ttime:189.1ms, loops:2                                                                                                                                                                                                                                                                                                                             \t1.83 KB  \tN/A\n\t└─TableReader_21        \troot     \t1      \tdata:StreamAgg_9                                                                           \t1      \ttime:189.1ms, loops:2, cop_task: {num: 1, max: 189ms, proc_keys: 262144, tot_proc: 187.3ms, tot_wait: 28.5µs, copr_cache_hit_ratio: 0.00, build_task_duration: 5.65µs, max_distsql_concurrency: 1}, rpc_info:{Cop:{num_rpc:1, total_time:189ms}}                                                                                                \t389 Bytes\tN/A\n\t  └─StreamAgg_9         \tcop[tikv]\t1      \tfuncs:count(1)->Column#11, funcs:sum(squad_lab.orders_big.amount)->Column#12               \t1      \ttikv_task:{time:187ms, loops:257}, scan_detail: {total_process_keys: 262144, total_process_keys_size: 22347651, total_keys: 262146, get_snapshot_time: 14.6µs, rocksdb: {block: {}}}, time_detail: {total_process_time: 187.3ms, total_suspend_time: 177.6µs, total_wait_time: 28.5µs, total_kv_read_wall_time: 110ms, tikv_wall_time: 187.6ms}\tN/A      \tN/A\n\t    └─Selection_19      \tcop[tikv]\t209.72 \teq(squad_lab.orders_big.status, \"new\"), like(squad_lab.orders_big.note, \"%-042\", 92)       \t129    \ttikv_task:{time:186ms, loops:257}                                                                                                                                                                                                                                                                                                                 \tN/A      \tN/A\n\t      └─TableFullScan_18\tcop[tikv]\t262144 \ttable:orders_big, keep order:false, stats:partial[status:unInitialized, note:unInitialized]\t262144 \ttikv_task:{time:110ms, loops:257}                                                                                                                                                                                                                                                                                                                 \tN/A      \tN/A"
+        }
+      ]
+    }
+  },
+  "collection_end": "2026-10-02T08:59:55.338851+08:00"
+}

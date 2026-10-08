@@ -1,0 +1,167 @@
+{
+  "collection_start": "2026-10-02T09:21:14.591151+08:00",
+  "queries": {
+    "histograms": "SHOW STATS_HISTOGRAMS WHERE Db_name='squad_lab' AND Table_name='orders_big'",
+    "explain_original": "EXPLAIN FORMAT='brief' SELECT COUNT(*), SUM(amount) FROM squad_lab.orders_big WHERE note LIKE '%-042' AND status='new'",
+    "explain_rewrite": "EXPLAIN FORMAT='brief' SELECT COUNT(*), SUM(amount) FROM squad_lab.orders_big WHERE note_suffix4='-042' AND status='new'"
+  },
+  "results": {
+    "histograms": {
+      "ok": true,
+      "rows": [
+        {
+          "Db_name": "squad_lab",
+          "Table_name": "orders_big",
+          "Partition_name": "",
+          "Column_name": "note",
+          "Is_index": 0,
+          "Update_time": "2026-10-02 01:19:33",
+          "Distinct_count": 1000,
+          "Null_count": 0,
+          "Avg_col_size": 20.0,
+          "Correlation": 1.4780006138635085e-06,
+          "Load_status": "allLoaded",
+          "Total_mem_usage": 29416,
+          "Hist_mem_usage": 24944,
+          "Topn_mem_usage": 4472,
+          "Cms_mem_usage": 0
+        },
+        {
+          "Db_name": "squad_lab",
+          "Table_name": "orders_big",
+          "Partition_name": "",
+          "Column_name": "note_suffix4",
+          "Is_index": 0,
+          "Update_time": "2026-10-02 01:19:09",
+          "Distinct_count": 0,
+          "Null_count": 262144,
+          "Avg_col_size": 0.0,
+          "Correlation": 0.0,
+          "Load_status": "allLoaded",
+          "Total_mem_usage": 0,
+          "Hist_mem_usage": 0,
+          "Topn_mem_usage": 0,
+          "Cms_mem_usage": 0
+        },
+        {
+          "Db_name": "squad_lab",
+          "Table_name": "orders_big",
+          "Partition_name": "",
+          "Column_name": "status",
+          "Is_index": 0,
+          "Update_time": "2026-10-02 01:19:33",
+          "Distinct_count": 2,
+          "Null_count": 0,
+          "Avg_col_size": 4.5,
+          "Correlation": 0.49634571596562443,
+          "Load_status": "allLoaded",
+          "Total_mem_usage": 116,
+          "Hist_mem_usage": 0,
+          "Topn_mem_usage": 116,
+          "Cms_mem_usage": 0
+        },
+        {
+          "Db_name": "squad_lab",
+          "Table_name": "orders_big",
+          "Partition_name": "",
+          "Column_name": "id",
+          "Is_index": 0,
+          "Update_time": "2026-10-02 01:19:33",
+          "Distinct_count": 258464,
+          "Null_count": 0,
+          "Avg_col_size": 8.0,
+          "Correlation": 1.0,
+          "Load_status": "allLoaded",
+          "Total_mem_usage": 10536,
+          "Hist_mem_usage": 10536,
+          "Topn_mem_usage": 0,
+          "Cms_mem_usage": 0
+        },
+        {
+          "Db_name": "squad_lab",
+          "Table_name": "orders_big",
+          "Partition_name": "",
+          "Column_name": "idx_orders_status_suffix4_amount",
+          "Is_index": 1,
+          "Update_time": "2026-10-02 01:19:33",
+          "Distinct_count": 2000,
+          "Null_count": 0,
+          "Avg_col_size": 0.0,
+          "Correlation": 0.0,
+          "Load_status": "allLoaded",
+          "Total_mem_usage": 35444,
+          "Hist_mem_usage": 29472,
+          "Topn_mem_usage": 5972,
+          "Cms_mem_usage": 0
+        }
+      ]
+    },
+    "explain_original": {
+      "ok": true,
+      "rows": [
+        {
+          "id": "HashAgg",
+          "estRows": "1.00",
+          "task": "root",
+          "access object": "",
+          "operator info": "funcs:count(Column#10)->Column#8, funcs:sum(Column#11)->Column#9"
+        },
+        {
+          "id": "└─TableReader",
+          "estRows": "1.00",
+          "task": "root",
+          "access object": "",
+          "operator info": "data:HashAgg"
+        },
+        {
+          "id": "  └─HashAgg",
+          "estRows": "1.00",
+          "task": "cop[tikv]",
+          "access object": "",
+          "operator info": "funcs:count(1)->Column#10, funcs:sum(squad_lab.orders_big.amount)->Column#11"
+        },
+        {
+          "id": "    └─Selection",
+          "estRows": "104790.80",
+          "task": "cop[tikv]",
+          "access object": "",
+          "operator info": "eq(squad_lab.orders_big.status, \"new\"), like(squad_lab.orders_big.note, \"%-042\", 92)"
+        },
+        {
+          "id": "      └─TableFullScan",
+          "estRows": "262144.00",
+          "task": "cop[tikv]",
+          "access object": "table:orders_big",
+          "operator info": "keep order:false"
+        }
+      ]
+    },
+    "explain_rewrite": {
+      "ok": true,
+      "rows": [
+        {
+          "id": "StreamAgg",
+          "estRows": "1.00",
+          "task": "root",
+          "access object": "",
+          "operator info": "funcs:count(1)->Column#8, funcs:sum(squad_lab.orders_big.amount)->Column#9"
+        },
+        {
+          "id": "└─IndexReader",
+          "estRows": "1.00",
+          "task": "root",
+          "access object": "",
+          "operator info": "index:IndexRangeScan"
+        },
+        {
+          "id": "  └─IndexRangeScan",
+          "estRows": "1.00",
+          "task": "cop[tikv]",
+          "access object": "table:orders_big, index:idx_orders_status_suffix4_amount(status, note_suffix4, amount)",
+          "operator info": "range:[\"new\" \"-042\",\"new\" \"-042\"], keep order:false"
+        }
+      ]
+    }
+  },
+  "collection_end": "2026-10-02T09:21:14.855797+08:00"
+}
