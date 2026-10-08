@@ -124,7 +124,7 @@ footer p+p{margin-top:6px}
 <div class="tl">
 
   <div class="ev r-human"><div class="card">
-    <div class="evhead"><span class="time">08:55</span><span class="who">人类</span><span class="tag auth">授权①告警</span></div>
+    <div class="evhead"><span class="time">08:55</span><span class="who">人类</span><span class="tag auth">P1 告警</span></div>
     <p><code>@squad-lead 🚨 P1 告警：业务反馈订单查询大面积超时，orders_big 相关查询延迟飙高，请立即接管排查。</code></p>
   </div></div>
 
@@ -158,12 +158,12 @@ footer p+p{margin-top:6px}
   </div></div>
 
   <div class="ev r-human"><div class="card">
-    <div class="evhead"><span class="time">09:06</span><span class="who">人类</span><span class="tag auth">授权②修复</span></div>
+    <div class="evhead"><span class="time">09:06</span><span class="who">人类</span><span class="tag auth">授权①修复</span></div>
     <p><code>授权执行修复方案：按 diagnostician 提议创建虚拟生成列和联合覆盖索引，先隔离验证再上生产，注意风险与回滚预案。完成后复测并回报 25ms 级对比数据。</code></p>
   </div></div>
 
   <div class="ev r-human"><div class="card">
-    <div class="evhead"><span class="time">09:10</span><span class="who">人类</span><span class="tag auth">授权③合并执行</span></div>
+    <div class="evhead"><span class="time">09:10</span><span class="who">人类</span><span class="tag auth">授权②合并执行</span></div>
     <p><code>本环境即为演示环境，隔离验证与生产合并执行：直接创建生成列与索引并复测同一条业务 SQL。</code></p>
   </div></div>
 
@@ -197,7 +197,7 @@ ANALYZE TABLE squad_lab.orders_big COLUMNS status,note,note_suffix4,amount;</pre
   </div></div>
 
   <div class="ev r-human"><div class="card">
-    <div class="evhead"><span class="time">09:25</span><span class="who">人类</span><span class="tag auth">授权④切换</span></div>
+    <div class="evhead"><span class="time">09:25</span><span class="who">人类</span><span class="tag auth">授权③切换</span></div>
     <p><code>批准查询改写：应用侧立即切换为显式尾缀列查询，视为演示环境的应用发布。请复测确认业务走新索引后关闭 P1。</code></p>
   </div></div>
 
